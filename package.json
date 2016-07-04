@@ -1,0 +1,32 @@
+{
+  "name": "account_robot",
+  "version": "0.1.0",
+  "description": "An account chat bot based on fb messenger",
+  "main": "index.js",
+  "scripts": {
+    "test": "test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/leedan77/AccountRobot.git"
+  },
+  "keywords": [
+    "robot",
+    "chat",
+    "account",
+    "billing",
+    "facebook",
+    "messenger"
+  ],
+  "author": "Shawn Lee <san.an.lee@gmail.com>",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/leedan77/AccountRobot/issues"
+  },
+  "homepage": "https://github.com/leedan77/AccountRobot#readme",
+  "dependencies": {
+    "body-parser": "^1.15.2",
+    "express": "^4.14.0",
+    "request": "^2.72.0"
+  }
+}
