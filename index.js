@@ -27,28 +27,49 @@ app.get('/webhook/', function (req, res) {
 })
 
 app.post('/webhook/', function (req, res) {
-   let messaging_events = req.body.entry[0].messaging
-   for (let i = 0; i < messaging_events.length; i++) {
-      let event = req.body.entry[0].messaging[i]
-      let sender = event.sender.id
-      if (event.message && event.message.text) {
-         let text = event.message.text
-         if (text === 'Generic') {
-            sendGenericMessage(sender)
-            continue
-         }
-         sendTextMessage(sender, "Text received, echo: " + text.substring(0, 200))
-      }
-      if (event.postback) {
-         let text = JSON.stringify(event.postback)
-         sendTextMessage(sender, "Postback received: "+text.substring(0, 200), token)
+  sendWelcomeMessage();
+  let messaging_events = req.body.entry[0].messaging
+  for (let i = 0; i < messaging_events.length; i++) {
+    let event = req.body.entry[0].messaging[i]
+    let sender = event.sender.id
+    if (event.message && event.message.text) {
+      let text = event.message.text
+      if (text === 'Generic') {
+         sendGenericMessage(sender)
          continue
       }
-   }
-   res.sendStatus(200)
+      sendTextMessage(sender, "Text received, echo: " + text.substring(0, 200))
+    }
+    if (event.postback) {
+      let text = JSON.stringify(event.postback)
+      sendTextMessage(sender, "Postback received: "+text.substring(0, 200), token)
+      continue
+    }
+  }
+  res.sendStatus(200)
 })
 
+// API PART
 const token = process.env.FB_PAGE_ACCESS_TOKEN;
+
+function sendWelcomeMessage() {
+  let greetData = {
+    "setting_type": "greeting",
+    "greeting": {
+      "text": "我是幫你記帳的小幫手喔>__<"
+    }
+  };
+  request({
+    url: 'https://graph.facebook.com/v2.6/me/thread_settings',
+    qs: {access_token: token},
+    method: 'POST',
+    json: greetData,
+  }, function(error, response, body){
+    console.error(error);
+
+  });
+
+}
 
 function sendTextMessage(sender, text) {
   let messageData = { text:text }
@@ -61,10 +82,13 @@ function sendTextMessage(sender, text) {
           message: messageData,
       }
   }, function(error, response, body) {
-      if (error) {
-          console.log('Error sending messages: ', error)
-      } else if (response.body.error) {
-          console.log('Error: ', response.body.error)
+      if (!error && response.statusCode == 200) {
+      console.log("greeting body: ", 
+        body);
+      } else {
+        console.error("Unable to send message.");
+        console.error(response);
+        console.error(error);
       }
   })
 }
