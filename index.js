@@ -65,8 +65,10 @@ function sendWelcomeMessage() {
     method: 'POST',
     json: greetData,
   }, function(error, response, body){
-    console.error(error);
-
+    if(error) console.error(error);
+    else {
+      console.log(response);
+    }
   });
 
 }
@@ -82,13 +84,10 @@ function sendTextMessage(sender, text) {
           message: messageData,
       }
   }, function(error, response, body) {
-      if (!error && response.statusCode == 200) {
-      console.log("greeting body: ", 
-        body);
-      } else {
-        console.error("Unable to send message.");
-        console.error(response);
-        console.error(error);
+      if (error) {
+          console.log('Error sending messages: ', error)
+      } else if (response.body.error) {
+          console.log('Error: ', response.body.error)
       }
   })
 }
