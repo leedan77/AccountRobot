@@ -1,9 +1,14 @@
 'use strict';
 
-const express = require('express');
-const bodyParser = require('body-parser');
-const request = require('request');
-const app = express();
+var _config = require('./config');
+
+var express = require('express');
+var bodyParser = require('body-parser');
+var request = require('request');
+var app = express();
+
+
+(0, _config.initChatMenu)();
 
 app.set('port', process.env.PORT || 9000);
 
@@ -28,12 +33,12 @@ app.get('/webhook/', function (req, res) {
 
 app.post('/webhook/', function (req, res) {
   //sendWelcomeMessage();
-  let messaging_events = req.body.entry[0].messaging;
-  for (let i = 0; i < messaging_events.length; i++) {
-    let event = req.body.entry[0].messaging[i];
-    let sender = event.sender.id;
+  var messaging_events = req.body.entry[0].messaging;
+  for (var i = 0; i < messaging_events.length; i++) {
+    var event = req.body.entry[0].messaging[i];
+    var sender = event.sender.id;
     if (event.message && event.message.text) {
-      let text = event.message.text;
+      var text = event.message.text;
       if (text === 'Generic') {
         sendGenericMessage(sender);
         continue;
@@ -41,8 +46,8 @@ app.post('/webhook/', function (req, res) {
       sendTextMessage(sender, "Text received, echo: " + text.substring(0, 200));
     }
     if (event.postback) {
-      let text = JSON.stringify(event.postback);
-      sendTextMessage(sender, "Postback received: " + text.substring(0, 200), token);
+      var _text = JSON.stringify(event.postback);
+      sendTextMessage(sender, "Postback received: " + _text.substring(0, 200), token);
       continue;
     }
   }
@@ -50,7 +55,7 @@ app.post('/webhook/', function (req, res) {
 });
 
 // API PART
-const token = process.env.FB_PAGE_ACCESS_TOKEN;
+var token = process.env.FB_PAGE_ACCESS_TOKEN;
 
 /*
 function sendWelcomeMessage() {
@@ -76,7 +81,7 @@ function sendWelcomeMessage() {
 */
 
 function sendTextMessage(sender, text) {
-  let messageData = { text: text };
+  var messageData = { text: text };
   request({
     url: 'https://graph.facebook.com/v2.6/me/messages',
     qs: { access_token: token },
@@ -95,7 +100,7 @@ function sendTextMessage(sender, text) {
 }
 
 function sendGenericMessage(sender) {
-  let messageData = {
+  var messageData = {
     "attachment": {
       "type": "template",
       "payload": {

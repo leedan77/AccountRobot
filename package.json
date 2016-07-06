@@ -6,6 +6,7 @@
   "scripts": {
     "test": "test",
     "compile": "babel src -d dist",
+    "prestart": "npm run compile",
     "start": "node dist/index.js",
     "lint": "eslint ./src"
   },
@@ -28,6 +29,7 @@
   },
   "homepage": "https://github.com/leedan77/AccountRobot#readme",
   "dependencies": {
+    "axios": "^0.12.0",
     "body-parser": "^1.15.2",
     "express": "^4.14.0",
     "mongoose": "^4.5.3",

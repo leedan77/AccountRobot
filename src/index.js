@@ -1,9 +1,10 @@
-'use strict'
-
 const express = require('express')
 const bodyParser = require('body-parser')
 const request = require('request')
 const app = express()
+import { initChatMenu } from './config';
+
+initChatMenu();
 
 app.set('port', (process.env.PORT || 9000))
 
@@ -19,7 +20,7 @@ app.get('/', function (req, res) {
 })
 
 // for Facebook verification
-app.get('/webhook/', function (req, res) {
+app.get('/webhook/', (req, res) => {
     if (req.query['hub.verify_token'] === 'i_am_a_token_hehe') {
         res.send(req.query['hub.challenge'])
     }
