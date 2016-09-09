@@ -1,12 +1,16 @@
 import fetch from 'isomorphic-fetch';
 import url from 'url';
 import { token } from '../core/config';
+import api from '../core/api';
 
 const BASE_URL = 'https://graph.facebook.com/v2.6/me/messages'
 
 
 export function sendTextMessage(sender, text) {
-  const messageData = { text: text };
+  const messageData = { 
+    text: text,
+    metadata: "TEST_TEST",
+  };
   return fetch(`${BASE_URL}`, {
     method: 'POST',
     headers: {

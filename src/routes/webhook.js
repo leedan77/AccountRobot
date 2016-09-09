@@ -14,6 +14,7 @@ router.post('/', (req, res) => {
   for (let entry of req.body.entry) {
     for (let event of entry.messaging) {
       let sender = event.sender.id;
+      console.log(JSON.stringify(event.message));
       if (event.message && event.message.text) {
         let text = event.message.text;
         if (text === 'Generic') {
@@ -29,12 +30,10 @@ router.post('/', (req, res) => {
         });
       }
       if (event.postback) {
-        console.log(event.postback)
-        let text = JSON.stringify(event.postback);
-        sendTextMessage(sender, "Postback received: "+ text.substring(0, 200))
-        .then(res => {
-          console.log(res);
-        });
+        let payload = event.postback.payload;
+        if (payload === 'NEW_ITEM')  {
+          sendTextMessage(sender, "請依序輸入: 商品名稱 價錢 類型");
+        }
         continue;
       }
     }
