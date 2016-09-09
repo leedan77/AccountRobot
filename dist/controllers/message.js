@@ -19,9 +19,6 @@ var _config = require('../core/config');
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var BASE_URL = 'https://graph.facebook.com/v2.6/me/messages';
-var queryString = _url2.default.format({
-  query: { access_token: _config.token }
-});
 
 function sendTextMessage(sender, text) {
   var messageData = { text: text };
@@ -31,6 +28,7 @@ function sendTextMessage(sender, text) {
       'Content-Type': 'application/json'
     },
     body: JSON.stringify({
+      access_token: _config.token,
       recipient: {
         id: sender
       },
@@ -79,6 +77,7 @@ function sendGenericMessage(sender) {
       'Content-Type': 'application/json'
     },
     body: JSON.stringify({
+      access_token: _config.token,
       recipient: {
         id: sender
       },

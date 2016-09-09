@@ -3,9 +3,7 @@ import url from 'url';
 import { token } from '../core/config';
 
 const BASE_URL = 'https://graph.facebook.com/v2.6/me/messages'
-const queryString = url.format({ 
-  query: { access_token: token } 
-});
+
 
 export function sendTextMessage(sender, text) {
   const messageData = { text: text };
@@ -15,6 +13,7 @@ export function sendTextMessage(sender, text) {
       'Content-Type': 'application/json',
     },
     body: JSON.stringify({
+      access_token: token,
       recipient: {
         id: sender,
       },
@@ -62,6 +61,7 @@ export function sendGenericMessage(sender) {
       'Content-Type': 'application/json',
     },
     body: JSON.stringify({
+      access_token: token,
       recipient: {
         id: sender,
       },
