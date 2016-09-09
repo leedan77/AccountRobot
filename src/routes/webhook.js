@@ -10,6 +10,7 @@ router.get('/', (req, res) => {
 });
 
 router.post('/', (req, res) => {
+  console.log(req.body.entry);
   for (let entry of req.body.entry) {
     for (let event of entry.messaging) {
       let sender = event.sender.id;
