@@ -37,15 +37,21 @@ router.post('/', function (req, res) {
           if (event.message && event.message.text) {
             var text = event.message.text;
             if (text === 'Generic') {
-              (0, _message.sendGenericMessage)(sender);
+              (0, _message.sendGenericMessage)(sender).then(function (res) {
+                console.log(res);
+              });
               continue;
             }
-            (0, _message.sendTextMessage)(sender, "Text received, echo: " + text.substring(0, 200));
+            (0, _message.sendTextMessage)(sender, "Text received, echo: " + text.substring(0, 200)).then(function (res) {
+              console.log(res);
+            });
           }
           if (event.postback) {
             console.log(event.postback);
             var _text = JSON.stringify(event.postback);
-            (0, _message.sendTextMessage)(sender, "Postback received: " + _text.substring(0, 200), token);
+            (0, _message.sendTextMessage)(sender, "Postback received: " + _text.substring(0, 200)).then(function (res) {
+              console.log(res);
+            });
             continue;
           }
         }
