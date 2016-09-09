@@ -1,8 +1,19 @@
 import axios from 'axios';
+import api from './api';
 
 export const port = process.env.PORT || 9000;
 export const token = process.env.FB_PAGE_ACCESS_TOKEN;
 export const dbUrl = process.env.MONGODB_URI || 'mongodb://localhost/account_robot';
+
+export function initNewThreadBtn() {
+  return api.post("thread_settings", {
+    setting_type: "call_to_actions",
+    thread_state: "new_thread",
+    call_to_actions: [{
+      payload: "NEW_THREAD",
+    }],
+  });
+}
 
 export function initChatMenu() {
   axios.post(

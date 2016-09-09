@@ -16,9 +16,9 @@ var _bodyParser = require('body-parser');
 
 var _bodyParser2 = _interopRequireDefault(_bodyParser);
 
-var _request = require('request');
+var _debug = require('debug');
 
-var _request2 = _interopRequireDefault(_request);
+var _debug2 = _interopRequireDefault(_debug);
 
 var _config = require('./config');
 
@@ -28,7 +28,17 @@ var _routes2 = _interopRequireDefault(_routes);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
+var log = (0, _debug2.default)('Bot:log');
+var error = (0, _debug2.default)('Bot:error');
+
+(0, _config.initNewThreadBtn)().then(function (res) {
+  log(res);
+}).catch(function (err) {
+  error(err);
+});
+
 (0, _config.initChatMenu)();
+
 var app = (0, _express2.default)();
 
 if (process.env.NODE_ENV !== 'test') {
