@@ -16,15 +16,24 @@ router.post('/', (req, res) => {
       if (event.message && event.message.text) {
         let text = event.message.text;
         if (text === 'Generic') {
-           sendGenericMessage(sender);
+           sendGenericMessage(sender)
+           .then(res => {
+            console.log(res);
+           });
            continue;
         }
-        sendTextMessage(sender, "Text received, echo: " + text.substring(0, 200));
+        sendTextMessage(sender, "Text received, echo: " + text.substring(0, 200))
+        .then(res => {
+          console.log(res);
+        });
       }
       if (event.postback) {
         console.log(event.postback)
         let text = JSON.stringify(event.postback);
-        sendTextMessage(sender, "Postback received: "+ text.substring(0, 200), token);
+        sendTextMessage(sender, "Postback received: "+ text.substring(0, 200))
+        .then(res => {
+          console.log(res);
+        });
         continue;
       }
     }
