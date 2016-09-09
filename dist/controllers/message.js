@@ -16,12 +16,19 @@ var _url2 = _interopRequireDefault(_url);
 
 var _config = require('../core/config');
 
+var _api = require('../core/api');
+
+var _api2 = _interopRequireDefault(_api);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var BASE_URL = 'https://graph.facebook.com/v2.6/me/messages';
 
 function sendTextMessage(sender, text) {
-  var messageData = { text: text };
+  var messageData = {
+    text: text,
+    metadata: "TEST_TEST"
+  };
   return (0, _isomorphicFetch2.default)('' + BASE_URL, {
     method: 'POST',
     headers: {

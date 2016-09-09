@@ -42,8 +42,8 @@ function initChatMenu() {
       "payload": "DEVELOPER_DEFINED_PAYLOAD_FOR_HELP"
     }, {
       "type": "postback",
-      "title": "新增新的紀錄",
-      "payload": "DEVELOPER_DEFINED_PAYLOAD_FOR_START_ORDER"
+      "title": "新增新的項目",
+      "payload": "NEW_ITEM"
     }, {
       "type": "web_url",
       "title": "聯絡我",

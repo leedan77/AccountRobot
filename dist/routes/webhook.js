@@ -35,6 +35,7 @@ router.post('/', function (req, res) {
           var event = _step2.value;
 
           var sender = event.sender.id;
+          console.log(JSON.stringify(event.message));
           if (event.message && event.message.text) {
             var text = event.message.text;
             if (text === 'Generic') {
@@ -48,11 +49,10 @@ router.post('/', function (req, res) {
             });
           }
           if (event.postback) {
-            console.log(event.postback);
-            var _text = JSON.stringify(event.postback);
-            (0, _message.sendTextMessage)(sender, "Postback received: " + _text.substring(0, 200)).then(function (res) {
-              console.log(res);
-            });
+            var payload = event.postback.payload;
+            if (payload === 'NEW_ITEM') {
+              (0, _message.sendTextMessage)(sender, "請依序輸入: 商品名稱 價錢 類型");
+            }
             continue;
           }
         }
