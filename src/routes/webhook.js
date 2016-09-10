@@ -1,5 +1,6 @@
 import { Router } from 'express';
-import { sendTextMessage, sendGenericMessage } from '../controllers/message';
+import { sendTextMessage, sendGenericMessage, sendButtonMessage } from '../controllers/message';
+import { createNewItem } from '../controllers/item';
 const router = new Router();
 
 router.get('/', (req, res) => {
@@ -9,37 +10,57 @@ router.get('/', (req, res) => {
     res.send('Error, wrong token');
 });
 
-router.post('/', (req, res) => {
-  console.log(req.body.entry);
-  for (let entry of req.body.entry) {
-    for (let event of entry.messaging) {
-      let sender = event.sender.id;
-      console.log(JSON.stringify(event.message));
-      if (event.message && event.message.text) {
-        let text = event.message.text;
-        if (text === 'Generic') {
-           sendGenericMessage(sender)
-           .then(res => {
-            console.log(res);
-           });
-           continue;
+let newItemFlag = false;
+
+function* newItemFlow() {
+
+}
+
+router.post('/', async (req, res, next) => {
+  try {
+    console.log(req.body.entry);
+    for (let entry of req.body.entry) {
+      for (let event of entry.messaging) {
+        let sender = event.sender.id;
+        console.log(JSON.stringify(event.message));
+        if (event.message && event.message.text) {
+          let text = event.message.text;
+          if (event.postback) {
+            let payload = event.postback.payload;
+            if (payload === 'NEW_ITEM')  {
+              sendTextMessage(sender, "請依序輸入: 商品名稱 價錢 類型");
+              newItemFlag = true;
+            } else if (payload === 'CANCEL_ITEM') {
+              sendTextMessage(sender, "已取消新增項目");
+              newItemFlag = false;
+            }
+            continue;
+          }
+          if (newItemFlag) {
+            const arrStr = text.split(' ');
+            if (arrStr.length == 3) {
+              const name = arrStr[0];
+              const price = Number(arrStr[1]);
+              const type = arrStr[2];             
+              await createNewItem(sender, name, type, price);
+              sendTextMessage(sender, `已儲存 新的項目: ${name}, 價錢: ${price}, 種類: ${type}`);            
+            } else {
+              const buttons = [{
+                type: "postback",
+                title: "取消新增項目",
+                payload: "CANCEL_ITEM"
+              }];
+              sendButtonMessage(sender, "錯誤的格式, 請依序輸入: 商品名稱 價錢 類型", buttons);
+            }
+          }
         }
-        sendTextMessage(sender, "Text received, echo: " + text.substring(0, 200))
-        .then(res => {
-          console.log(res);
-        });
       }
-      if (event.postback) {
-        let payload = event.postback.payload;
-        if (payload === 'NEW_ITEM')  {
-          sendTextMessage(sender, "請依序輸入: 商品名稱 價錢 類型");
-        }
-        continue;
-      }
+      
     }
-    
-  }
-  res.sendStatus(200);
+    res.sendStatus(200);
+  } catch (err) {
+    next(err);
+  }  
 });
 
 export default router
