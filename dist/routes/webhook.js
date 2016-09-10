@@ -39,7 +39,7 @@ function newItemFlow() {
 
 router.post('/', function () {
   var _ref = _asyncToGenerator(regeneratorRuntime.mark(function _callee(req, res, next) {
-    var _iteratorNormalCompletion, _didIteratorError, _iteratorError, _iterator, _step, entry, _iteratorNormalCompletion2, _didIteratorError2, _iteratorError2, _iterator2, _step2, event, sender, text, payload, arrStr, name, price, type, buttons;
+    var _iteratorNormalCompletion, _didIteratorError, _iteratorError, _iterator, _step, entry, _iteratorNormalCompletion2, _didIteratorError2, _iteratorError2, _iterator2, _step2, event, sender, payload, text, arrStr, name, price, type, buttons;
 
     return regeneratorRuntime.wrap(function _callee$(_context2) {
       while (1) {
@@ -78,15 +78,8 @@ router.post('/', function () {
 
             console.log(JSON.stringify(event.message));
 
-            if (!(event.message && event.message.text)) {
-              _context2.next = 37;
-              break;
-            }
-
-            text = event.message.text;
-
             if (!event.postback) {
-              _context2.next = 24;
+              _context2.next = 22;
               break;
             }
 
@@ -101,7 +94,14 @@ router.post('/', function () {
             }
             return _context2.abrupt('continue', 37);
 
-          case 24:
+          case 22:
+            if (!(event.message && event.message.text)) {
+              _context2.next = 37;
+              break;
+            }
+
+            text = event.message.text;
+
             if (!newItemFlag) {
               _context2.next = 37;
               break;

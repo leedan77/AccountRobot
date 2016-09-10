@@ -23,19 +23,20 @@ router.post('/', async (req, res, next) => {
       for (let event of entry.messaging) {
         let sender = event.sender.id;
         console.log(JSON.stringify(event.message));
+        if (event.postback) {
+          let payload = event.postback.payload;
+          if (payload === 'NEW_ITEM')  {
+            sendTextMessage(sender, "請依序輸入: 商品名稱 價錢 類型");
+            newItemFlag = true;
+          } else if (payload === 'CANCEL_ITEM') {
+            sendTextMessage(sender, "已取消新增項目");
+            newItemFlag = false;
+          }
+          continue;
+        }
         if (event.message && event.message.text) {
           let text = event.message.text;
-          if (event.postback) {
-            let payload = event.postback.payload;
-            if (payload === 'NEW_ITEM')  {
-              sendTextMessage(sender, "請依序輸入: 商品名稱 價錢 類型");
-              newItemFlag = true;
-            } else if (payload === 'CANCEL_ITEM') {
-              sendTextMessage(sender, "已取消新增項目");
-              newItemFlag = false;
-            }
-            continue;
-          }
+          
           if (newItemFlag) {
             const arrStr = text.split(' ');
             if (arrStr.length == 3) {
