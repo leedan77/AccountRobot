@@ -27,8 +27,11 @@ export function sendTextMessage(sender, text) {
   .then(res => res.json());
 }
 
-export async function sendButtonMessage(sender, text, buttons) {
+export function sendButtonMessage(sender, text, buttons) {
   let messageData = {
+    recipient: {
+      id: sender,
+    },
     message: {
       attachment: {
         type: "template",
@@ -40,6 +43,7 @@ export async function sendButtonMessage(sender, text, buttons) {
       }
     }
   }
+  return api.post('messages', messageData);
 }
 
 export function sendGenericMessage(sender) {

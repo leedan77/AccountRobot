@@ -18,7 +18,6 @@ function* newItemFlow() {
 
 router.post('/', async (req, res, next) => {
   try {
-    console.log(req.body.entry);
     for (let entry of req.body.entry) {
       for (let event of entry.messaging) {
         let sender = event.sender.id;
@@ -51,7 +50,7 @@ router.post('/', async (req, res, next) => {
                 title: "取消新增項目",
                 payload: "CANCEL_ITEM"
               }];
-              sendButtonMessage(sender, "錯誤的格式, 請依序輸入: 商品名稱 價錢 類型", buttons);
+              const result = await sendButtonMessage(sender, "錯誤的格式, 請依序輸入: 商品名稱 價錢 類型", buttons);
             }
           }
         }
