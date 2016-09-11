@@ -36,29 +36,27 @@ function newItemFlow(sender) {
 
         case 2:
           name = _context.sent;
+          _context.next = 5;
+          return (0, _message.sendTextMessage)(sender, '商品名稱: ' + name);
 
-          (0, _message.sendTextMessage)(sender, '商品名稱: ' + name);
-          _context.next = 6;
-          return "price";
-
-        case 6:
+        case 5:
           price = _context.sent;
+          _context.next = 8;
+          return (0, _message.sendTextMessage)(sender, '價錢: ' + price);
 
-          (0, _message.sendTextMessage)(sender, '價錢: ' + price);
-          _context.next = 10;
-          return "type";
-
-        case 10:
+        case 8:
           type = _context.sent;
+          _context.next = 11;
+          return (0, _message.sendTextMessage)(sender, '類型: ' + type);
 
-          (0, _message.sendTextMessage)(sender, '類型: ' + type);
+        case 11:
           (0, _item.createNewItem)(sender, name, type, price).then(function (res) {
             (0, _message.sendTextMessage)(sender, '已儲存 新的項目: ' + name + ', 價錢: ' + price + ', 種類: ' + type);
           }).catch(function (err) {
             console.error(err);
           });
 
-        case 13:
+        case 12:
         case 'end':
           return _context.stop();
       }
