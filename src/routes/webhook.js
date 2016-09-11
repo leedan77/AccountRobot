@@ -12,9 +12,18 @@ router.get('/', (req, res) => {
 
 let newItemFlag = false;
 
-function* newItemFlow() {
-
+function* newItemFlow(sender) { 
+  const name = yield "name";
+  sendTextMessage(sender, `商品名稱: ${name}`)
+  const price = yield "price";
+  sendTextMessage(sender, `價錢: ${price}`)
+  const type = yield "type";
+  sendTextMessage(sender, `類型: ${type}`)
+  createNewItem(sender, name, type, price);
+  sendTextMessage(sender, `已儲存 新的項目: ${name}, 價錢: ${price}, 種類: ${type}`);
 }
+
+let itemFlow;
 
 router.post('/', async (req, res, next) => {
   try {
@@ -27,6 +36,8 @@ router.post('/', async (req, res, next) => {
           if (payload === 'NEW_ITEM')  {
             sendTextMessage(sender, "請依序輸入: 商品名稱 價錢 類型");
             newItemFlag = true;
+            itemFlow = newItemFlow(sender);
+            itemFlow.next();
           } else if (payload === 'CANCEL_ITEM') {
             sendTextMessage(sender, "已取消新增項目");
             newItemFlag = false;
@@ -34,17 +45,26 @@ router.post('/', async (req, res, next) => {
           continue;
         }
         if (event.message && event.message.text) {
-          let text = event.message.text;
-          
+          let text = event.message.text;       
           if (newItemFlag) {
             const arrStr = text.split(' ');
-            if (arrStr.length == 3) {
+            if (arrStr.length <= 3) {  
+              for (let str of arrStr) {
+                const isDone = itemFlow.next(str).done;
+                if (isDone) {
+                  newItemFlag = false;
+                  break;
+                }
+              }
+            } 
+            
+            /*if (arrStr.length == 3) {
               const name = arrStr[0];
               const price = Number(arrStr[1]);
               const type = arrStr[2];             
               await createNewItem(sender, name, type, price);
               sendTextMessage(sender, `已儲存 新的項目: ${name}, 價錢: ${price}, 種類: ${type}`);            
-            } else {
+            }*/ else {
               const buttons = [{
                 type: "postback",
                 title: "取消新增項目",
