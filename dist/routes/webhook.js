@@ -123,7 +123,7 @@ router.post('/', function () {
             return _context2.abrupt('continue', 60);
 
           case 21:
-            if (!(event.message && event.message.text)) {
+            if (!(event.message && event.message.text && !event.message.is_echo)) {
               _context2.next = 60;
               break;
             }

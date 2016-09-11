@@ -44,7 +44,7 @@ router.post('/', async (req, res, next) => {
           }
           continue;
         }
-        if (event.message && event.message.text) {
+        if (event.message && event.message.text && !event.message.is_echo) {
           let text = event.message.text;       
           if (newItemFlag) {
             const arrStr = text.split(' ');
