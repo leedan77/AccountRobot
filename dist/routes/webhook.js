@@ -52,10 +52,13 @@ function newItemFlow(sender) {
           type = _context.sent;
 
           (0, _message.sendTextMessage)(sender, '類型: ' + type);
-          (0, _item.createNewItem)(sender, name, type, price);
-          (0, _message.sendTextMessage)(sender, '已儲存 新的項目: ' + name + ', 價錢: ' + price + ', 種類: ' + type);
+          (0, _item.createNewItem)(sender, name, type, price).then(function (res) {
+            (0, _message.sendTextMessage)(sender, '已儲存 新的項目: ' + name + ', 價錢: ' + price + ', 種類: ' + type);
+          }).catch(function (err) {
+            console.error(err);
+          });
 
-        case 14:
+        case 13:
         case 'end':
           return _context.stop();
       }
