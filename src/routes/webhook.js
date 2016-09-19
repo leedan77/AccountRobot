@@ -19,7 +19,7 @@ function* newItemFlow(sender) {
   sendTextMessage(sender, `價錢: ${price}`)
   const type = yield "type";
   sendTextMessage(sender, `類型: ${type}`)
-  createNewItem(sender, name, type, price).then(res => {
+  createNewItem(sender, name, type, Number(price)).then(res => {
     sendTextMessage(sender, `已儲存 新的項目: ${name}, 價錢: ${price}, 種類: ${type}`);
   }).catch(err => {
     console.error(err);
