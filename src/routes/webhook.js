@@ -50,7 +50,7 @@ router.post('/', async (req, res, next) => {
         if (event.message && event.message.text && !event.message.is_echo) {
           let text = event.message.text;       
           if (newItemFlag) {
-            const isDone = itemFlow.next(str).done;
+            const isDone = itemFlow.next(text).done;
             if (isDone) {
               newItemFlag = false;
             } /* else {
