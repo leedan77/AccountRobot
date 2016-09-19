@@ -130,7 +130,7 @@ router.post('/', function () {
               text = event.message.text;
 
               if (newItemFlag) {
-                isDone = itemFlow.next(str).done;
+                isDone = itemFlow.next(text).done;
 
                 if (isDone) {
                   newItemFlag = false;
