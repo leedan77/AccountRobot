@@ -6,13 +6,13 @@ Object.defineProperty(exports, "__esModule", {
 exports.getAllItems = exports.createNewItem = undefined;
 
 var createNewItem = exports.createNewItem = function () {
-  var _ref = _asyncToGenerator(regeneratorRuntime.mark(function _callee(userID, name, type, price) {
+  var _ref = _asyncToGenerator(regeneratorRuntime.mark(function _callee(owner, name, type, price) {
     var item;
     return regeneratorRuntime.wrap(function _callee$(_context) {
       while (1) {
         switch (_context.prev = _context.next) {
           case 0:
-            item = new _item2.default({ userID: userID, name: name, type: type, price: price });
+            item = new _item2.default({ owner: owner, name: name, type: type, price: price });
             _context.next = 3;
             return item.save();
 

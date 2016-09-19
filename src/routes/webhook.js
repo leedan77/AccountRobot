@@ -33,6 +33,7 @@ router.post('/', async (req, res, next) => {
             newItemFlag = false;
           } else if (payload === 'SHOW_RECORD') {
             const items = await getAllItems(sender);
+            console.log(items);
             sendTextMessage(sender, items);
           }
           continue;
