@@ -14,13 +14,13 @@ let newItemFlag = false;
 
 function* newItemFlow(sender) { 
   const name = yield "name";
-  sendTextMessage(sender, `商品名稱: ${name}\n請輸入價錢`)
+  sendTextMessage(sender, `請輸入價錢`)
   const price = yield "price";
-  sendTextMessage(sender, `價錢: ${price}\n請輸入類型`)
+  sendTextMessage(sender, `請輸入類型`)
   const type = yield "type";
   // sendTextMessage(sender, `類型: ${type}`)
   createNewItem(sender, name, type, Number(price)).then(res => {
-    sendTextMessage(sender, `已儲存 新的項目: ${name}, 價錢: ${price}, 種類: ${type}`);
+    sendTextMessage(sender, `已儲存\n新的項目: ${name}\n價錢: ${price}\n種類: ${type}`);
   }).catch(err => {
     console.error(err);
   });
