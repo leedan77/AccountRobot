@@ -1,3 +1,6 @@
+import { sendTextMessage } from '../message';
+import { createNewItem } from '../item';
+
 export default function* newItemFlow(sender) { 
   const name = yield "name";
   sendTextMessage(sender, `請輸入價錢`)
