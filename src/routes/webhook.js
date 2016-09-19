@@ -1,6 +1,7 @@
 import { Router } from 'express';
 import { sendTextMessage, sendGenericMessage, sendButtonMessage } from '../controllers/message';
-import { createNewItem } from '../controllers/item';
+import { createNewItem, getAllItems } from '../controllers/item';
+import newItemFlow from '../controllers/flow/newItem';
 const router = new Router();
 
 router.get('/', (req, res) => {
@@ -11,20 +12,6 @@ router.get('/', (req, res) => {
 });
 
 let newItemFlag = false;
-
-function* newItemFlow(sender) { 
-  const name = yield "name";
-  sendTextMessage(sender, `請輸入價錢`)
-  const price = yield "price";
-  sendTextMessage(sender, `請輸入類型`)
-  const type = yield "type";
-  // sendTextMessage(sender, `類型: ${type}`)
-  createNewItem(sender, name, type, Number(price)).then(res => {
-    sendTextMessage(sender, `已儲存\n新的項目: ${name}\n價錢: ${price}\n種類: ${type}`);
-  }).catch(err => {
-    console.error(err);
-  });
-}
 
 let itemFlow;
 
@@ -44,6 +31,8 @@ router.post('/', async (req, res, next) => {
           } else if (payload === 'CANCEL_ITEM') {
             sendTextMessage(sender, "已取消新增項目");
             newItemFlag = false;
+          } else if (payload === 'SHOW_RECORD') {
+            
           }
           continue;
         }
