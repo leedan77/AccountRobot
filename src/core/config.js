@@ -25,8 +25,8 @@ export function initChatMenu() {
       call_to_actions: [
         {
           type: 'postback',
-          title: 'Help',
-          "payload":"DEVELOPER_DEFINED_PAYLOAD_FOR_HELP"
+          title: '我的紀錄',
+          payload: 'SHOW_RECORD',
         },
         {
           "type": "postback",

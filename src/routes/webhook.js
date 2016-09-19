@@ -32,7 +32,8 @@ router.post('/', async (req, res, next) => {
             sendTextMessage(sender, "已取消新增項目");
             newItemFlag = false;
           } else if (payload === 'SHOW_RECORD') {
-            
+            const items = await getAllItems(sender);
+            sendTextMessage(sender, items);
           }
           continue;
         }

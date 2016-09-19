@@ -10,9 +10,13 @@ var _message = require('../controllers/message');
 
 var _item = require('../controllers/item');
 
-function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, arguments); return new Promise(function (resolve, reject) { function step(key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { return Promise.resolve(value).then(function (value) { return step("next", value); }, function (err) { return step("throw", err); }); } } return step("next"); }); }; }
+var _newItem = require('../controllers/flow/newItem');
 
-var _marked = [newItemFlow].map(regeneratorRuntime.mark);
+var _newItem2 = _interopRequireDefault(_newItem);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, arguments); return new Promise(function (resolve, reject) { function step(key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { return Promise.resolve(value).then(function (value) { return step("next", value); }, function (err) { return step("throw", err); }); } } return step("next"); }); }; }
 
 var router = new _express.Router();
 
@@ -25,67 +29,26 @@ router.get('/', function (req, res) {
 
 var newItemFlag = false;
 
-function newItemFlow(sender) {
-  var name, price, type;
-  return regeneratorRuntime.wrap(function newItemFlow$(_context) {
-    while (1) {
-      switch (_context.prev = _context.next) {
-        case 0:
-          _context.next = 2;
-          return "name";
-
-        case 2:
-          name = _context.sent;
-
-          (0, _message.sendTextMessage)(sender, '請輸入價錢');
-          _context.next = 6;
-          return "price";
-
-        case 6:
-          price = _context.sent;
-
-          (0, _message.sendTextMessage)(sender, '請輸入類型');
-          _context.next = 10;
-          return "type";
-
-        case 10:
-          type = _context.sent;
-
-          // sendTextMessage(sender, `類型: ${type}`)
-          (0, _item.createNewItem)(sender, name, type, Number(price)).then(function (res) {
-            (0, _message.sendTextMessage)(sender, '已儲存\n新的項目: ' + name + '\n價錢: ' + price + '\n種類: ' + type);
-          }).catch(function (err) {
-            console.error(err);
-          });
-
-        case 12:
-        case 'end':
-          return _context.stop();
-      }
-    }
-  }, _marked[0], this);
-}
-
 var itemFlow = void 0;
 
 router.post('/', function () {
   var _ref = _asyncToGenerator(regeneratorRuntime.mark(function _callee(req, res, next) {
-    var _iteratorNormalCompletion, _didIteratorError, _iteratorError, _iterator, _step, entry, _iteratorNormalCompletion2, _didIteratorError2, _iteratorError2, _iterator2, _step2, event, sender, payload, text, isDone;
+    var _iteratorNormalCompletion, _didIteratorError, _iteratorError, _iterator, _step, entry, _iteratorNormalCompletion2, _didIteratorError2, _iteratorError2, _iterator2, _step2, event, sender, payload, items, text, isDone;
 
-    return regeneratorRuntime.wrap(function _callee$(_context2) {
+    return regeneratorRuntime.wrap(function _callee$(_context) {
       while (1) {
-        switch (_context2.prev = _context2.next) {
+        switch (_context.prev = _context.next) {
           case 0:
-            _context2.prev = 0;
+            _context.prev = 0;
             _iteratorNormalCompletion = true;
             _didIteratorError = false;
             _iteratorError = undefined;
-            _context2.prev = 4;
+            _context.prev = 4;
             _iterator = req.body.entry[Symbol.iterator]();
 
           case 6:
             if (_iteratorNormalCompletion = (_step = _iterator.next()).done) {
-              _context2.next = 42;
+              _context.next = 58;
               break;
             }
 
@@ -93,12 +56,12 @@ router.post('/', function () {
             _iteratorNormalCompletion2 = true;
             _didIteratorError2 = false;
             _iteratorError2 = undefined;
-            _context2.prev = 11;
+            _context.prev = 11;
             _iterator2 = entry.messaging[Symbol.iterator]();
 
           case 13:
             if (_iteratorNormalCompletion2 = (_step2 = _iterator2.next()).done) {
-              _context2.next = 25;
+              _context.next = 41;
               break;
             }
 
@@ -108,24 +71,53 @@ router.post('/', function () {
             console.log(JSON.stringify(event.message));
 
             if (!event.postback) {
-              _context2.next = 21;
+              _context.next = 37;
               break;
             }
 
             payload = event.postback.payload;
 
-            if (payload === 'NEW_ITEM') {
-              (0, _message.sendTextMessage)(sender, "請輸入商品名稱");
-              newItemFlag = true;
-              itemFlow = newItemFlow(sender);
-              itemFlow.next();
-            } else if (payload === 'CANCEL_ITEM') {
-              (0, _message.sendTextMessage)(sender, "已取消新增項目");
-              newItemFlag = false;
+            if (!(payload === 'NEW_ITEM')) {
+              _context.next = 26;
+              break;
             }
-            return _context2.abrupt('continue', 22);
 
-          case 21:
+            (0, _message.sendTextMessage)(sender, "請輸入商品名稱");
+            newItemFlag = true;
+            itemFlow = (0, _newItem2.default)(sender);
+            itemFlow.next();
+            _context.next = 36;
+            break;
+
+          case 26:
+            if (!(payload === 'CANCEL_ITEM')) {
+              _context.next = 31;
+              break;
+            }
+
+            (0, _message.sendTextMessage)(sender, "已取消新增項目");
+            newItemFlag = false;
+            _context.next = 36;
+            break;
+
+          case 31:
+            if (!(payload === 'SHOW_RECORD')) {
+              _context.next = 36;
+              break;
+            }
+
+            _context.next = 34;
+            return (0, _item.getAllItems)(sender);
+
+          case 34:
+            items = _context.sent;
+
+            (0, _message.sendTextMessage)(sender, items);
+
+          case 36:
+            return _context.abrupt('continue', 38);
+
+          case 37:
             if (event.message && event.message.text && !event.message.is_echo) {
               text = event.message.text;
 
@@ -145,101 +137,101 @@ router.post('/', function () {
               }
             }
 
-          case 22:
+          case 38:
             _iteratorNormalCompletion2 = true;
-            _context2.next = 13;
+            _context.next = 13;
             break;
 
-          case 25:
-            _context2.next = 31;
+          case 41:
+            _context.next = 47;
             break;
 
-          case 27:
-            _context2.prev = 27;
-            _context2.t0 = _context2['catch'](11);
+          case 43:
+            _context.prev = 43;
+            _context.t0 = _context['catch'](11);
             _didIteratorError2 = true;
-            _iteratorError2 = _context2.t0;
+            _iteratorError2 = _context.t0;
 
-          case 31:
-            _context2.prev = 31;
-            _context2.prev = 32;
+          case 47:
+            _context.prev = 47;
+            _context.prev = 48;
 
             if (!_iteratorNormalCompletion2 && _iterator2.return) {
               _iterator2.return();
             }
 
-          case 34:
-            _context2.prev = 34;
+          case 50:
+            _context.prev = 50;
 
             if (!_didIteratorError2) {
-              _context2.next = 37;
+              _context.next = 53;
               break;
             }
 
             throw _iteratorError2;
 
-          case 37:
-            return _context2.finish(34);
+          case 53:
+            return _context.finish(50);
 
-          case 38:
-            return _context2.finish(31);
+          case 54:
+            return _context.finish(47);
 
-          case 39:
+          case 55:
             _iteratorNormalCompletion = true;
-            _context2.next = 6;
+            _context.next = 6;
             break;
 
-          case 42:
-            _context2.next = 48;
+          case 58:
+            _context.next = 64;
             break;
 
-          case 44:
-            _context2.prev = 44;
-            _context2.t1 = _context2['catch'](4);
+          case 60:
+            _context.prev = 60;
+            _context.t1 = _context['catch'](4);
             _didIteratorError = true;
-            _iteratorError = _context2.t1;
+            _iteratorError = _context.t1;
 
-          case 48:
-            _context2.prev = 48;
-            _context2.prev = 49;
+          case 64:
+            _context.prev = 64;
+            _context.prev = 65;
 
             if (!_iteratorNormalCompletion && _iterator.return) {
               _iterator.return();
             }
 
-          case 51:
-            _context2.prev = 51;
+          case 67:
+            _context.prev = 67;
 
             if (!_didIteratorError) {
-              _context2.next = 54;
+              _context.next = 70;
               break;
             }
 
             throw _iteratorError;
 
-          case 54:
-            return _context2.finish(51);
+          case 70:
+            return _context.finish(67);
 
-          case 55:
-            return _context2.finish(48);
+          case 71:
+            return _context.finish(64);
 
-          case 56:
+          case 72:
             res.sendStatus(200);
-            _context2.next = 62;
+            _context.next = 78;
             break;
 
-          case 59:
-            _context2.prev = 59;
-            _context2.t2 = _context2['catch'](0);
+          case 75:
+            _context.prev = 75;
+            _context.t2 = _context['catch'](0);
 
-            next(_context2.t2);
+            next(_context.t2);
 
-          case 62:
+          case 78:
           case 'end':
-            return _context2.stop();
+            return _context.stop();
         }
       }
-    }, _callee, undefined, [[0, 59], [4, 44, 48, 56], [11, 27, 31, 39], [32,, 34, 38], [49,, 51, 55]]);
+    }, _callee, undefined, [[0, 75], [4, 60, 64, 72], [11, 43, 47, 55], [48,, 50, 54], [65,, 67, 71]]);
   }));
 
   return function (_x, _x2, _x3) {
