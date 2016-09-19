@@ -14,6 +14,8 @@ var _config = require('./config');
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
+_mongoose2.default.Promise = Promise;
+
 function connectDb() {
   return new Promise(function (resolve, reject) {
     _mongoose2.default.connect(_config.dbUrl, function (err) {
