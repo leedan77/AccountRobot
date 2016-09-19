@@ -11,7 +11,7 @@ export function connectDb() {
       }
     });
   });
-}
+};
 
 export function disconnectDb() {
   return new Promise((resolve, reject) => {
@@ -23,4 +23,4 @@ export function disconnectDb() {
       }
     });
   });
-}
+};

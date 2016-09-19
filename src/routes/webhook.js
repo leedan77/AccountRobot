@@ -14,11 +14,11 @@ let newItemFlag = false;
 
 function* newItemFlow(sender) { 
   const name = yield "name";
-  sendTextMessage(sender, `商品名稱: ${name}`)
+  sendTextMessage(sender, `商品名稱: ${name}\n請輸入價錢`)
   const price = yield "price";
-  sendTextMessage(sender, `價錢: ${price}`)
+  sendTextMessage(sender, `價錢: ${price}\n請輸入類型`)
   const type = yield "type";
-  sendTextMessage(sender, `類型: ${type}`)
+  // sendTextMessage(sender, `類型: ${type}`)
   createNewItem(sender, name, type, Number(price)).then(res => {
     sendTextMessage(sender, `已儲存 新的項目: ${name}, 價錢: ${price}, 種類: ${type}`);
   }).catch(err => {
@@ -36,8 +36,8 @@ router.post('/', async (req, res, next) => {
         console.log(JSON.stringify(event.message));
         if (event.postback) {
           let payload = event.postback.payload;
-          if (payload === 'NEW_ITEM')  {
-            sendTextMessage(sender, "請依序輸入: 商品名稱 價錢 類型");
+          if (payload === 'NEW_ITEM') {
+            sendTextMessage(sender, "請輸入商品名稱");
             newItemFlag = true;
             itemFlow = newItemFlow(sender);
             itemFlow.next();
@@ -50,31 +50,17 @@ router.post('/', async (req, res, next) => {
         if (event.message && event.message.text && !event.message.is_echo) {
           let text = event.message.text;       
           if (newItemFlag) {
-            const arrStr = text.split(' ');
-            if (arrStr.length <= 3) {  
-              for (let str of arrStr) {
-                const isDone = itemFlow.next(str).done;
-                if (isDone) {
-                  newItemFlag = false;
-                  break;
-                }
-              }
-            } 
-            
-            /*if (arrStr.length == 3) {
-              const name = arrStr[0];
-              const price = Number(arrStr[1]);
-              const type = arrStr[2];             
-              await createNewItem(sender, name, type, price);
-              sendTextMessage(sender, `已儲存 新的項目: ${name}, 價錢: ${price}, 種類: ${type}`);            
-            }*/ else {
+            const isDone = itemFlow.next(str).done;
+            if (isDone) {
+              newItemFlag = false;
+            } /* else {
               const buttons = [{
                 type: "postback",
                 title: "取消新增項目",
                 payload: "CANCEL_ITEM"
               }];
               const result = await sendButtonMessage(sender, "錯誤的格式, 請依序輸入: 商品名稱 價錢 類型", buttons);
-            }
+            } */
           }
         }
       }
@@ -86,4 +72,4 @@ router.post('/', async (req, res, next) => {
   }  
 });
 
-export default router
+export default router;

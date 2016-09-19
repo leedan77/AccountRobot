@@ -24,7 +24,7 @@ function connectDb() {
       }
     });
   });
-}
+};
 
 function disconnectDb() {
   return new Promise(function (resolve, reject) {
@@ -36,4 +36,4 @@ function disconnectDb() {
       }
     });
   });
-}
+};
