@@ -53,7 +53,7 @@ export function sendGenericMessage(sender, items) {
       subtitle: `$${item.price}`,
       buttons: [{
         type: "postback",
-        tiltle: "查看同種類的項目",
+        title: "查看同種類的項目",
         payload: `TYPE_${item.type}`,
       }],
     };
