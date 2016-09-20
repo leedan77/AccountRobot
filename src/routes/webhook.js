@@ -45,7 +45,7 @@ router.post('/', async (req, res, next) => {
             console.log(items);
             await sendReceipt(sender, items);
           } else if (payload === 'SHOW_CARD') {
-            const items = await getAllItems(sender, 10);
+            const items = await getAllItems(sender, 10).limit(10);
             const res = await sendGenericMessage(sender, items);
             console.log(res);
           } else if (payload.startsWith('TYPE_')) {
