@@ -113,7 +113,7 @@ router.post('/', function () {
             items = _context.sent;
 
             console.log(items);
-            (0, _message.sendTextMessage)(sender, items);
+            sendReceipt(sender, items);
 
           case 37:
             return _context.abrupt('continue', 39);

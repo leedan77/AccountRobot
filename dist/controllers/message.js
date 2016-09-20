@@ -6,6 +6,7 @@ Object.defineProperty(exports, "__esModule", {
 exports.sendTextMessage = sendTextMessage;
 exports.sendButtonMessage = sendButtonMessage;
 exports.sendGenericMessage = sendGenericMessage;
+exports.sendReceipt = sendReceipt;
 
 var _isomorphicFetch = require('isomorphic-fetch');
 
@@ -104,4 +105,38 @@ function sendGenericMessage(sender) {
   }).then(function (res) {
     return res.json();
   });
+}
+
+function sendReceipt(sender, items) {
+  var cost = 0;
+  var elements = items.map(function (item) {
+    cost += item.price;
+    return {
+      title: item.name,
+      subtitle: item.type,
+      price: item.price
+    };
+  });
+  var messageData = {
+    recipient: {
+      id: sender
+    },
+    message: {
+      attachment: {
+        type: "template",
+        payload: {
+          template_type: "receipt",
+          recipient_name: sender,
+          order_number: "77",
+          currency: "TWD",
+          payment_method: "現金",
+          elements: elements,
+          summary: {
+            total_cost: cost
+          }
+        }
+      }
+    }
+  };
+  _api2.default.post('messages', messageData);
 }

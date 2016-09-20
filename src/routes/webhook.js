@@ -34,7 +34,7 @@ router.post('/', async (req, res, next) => {
           } else if (payload === 'SHOW_RECORD') {
             const items = await getAllItems(sender);
             console.log(items);
-            sendTextMessage(sender, items);
+            sendReceipt(sender, items);
           }
           continue;
         }

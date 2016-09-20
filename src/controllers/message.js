@@ -84,3 +84,37 @@ export function sendGenericMessage(sender) {
   })
   .then(res => res.json());
 }
+
+export function sendReceipt(sender, items) {
+  let cost = 0;
+  let elements = items.map(item => {
+    cost += item.price;
+    return {
+      title: item.name,
+      subtitle: item.type,
+      price: item.price,
+    };
+  });
+  let messageData = {
+    recipient: {
+      id: sender,
+    },
+    message: {
+      attachment: {
+        type: "template",
+        payload: {
+          template_type: "receipt",
+          recipient_name: sender,
+          order_number: "77",
+          currency: "TWD",
+          payment_method: "現金",
+          elements,
+          summary: {
+            total_cost: cost,
+          },
+        }
+      }
+    }
+  };
+  api.post('messages', messageData);
+}
