@@ -33,12 +33,12 @@ var createNewItem = exports.createNewItem = function () {
 }();
 
 var getAllItems = exports.getAllItems = function () {
-  var _ref2 = _asyncToGenerator(regeneratorRuntime.mark(function _callee2(userID) {
+  var _ref2 = _asyncToGenerator(regeneratorRuntime.mark(function _callee2(userID, limit) {
     return regeneratorRuntime.wrap(function _callee2$(_context2) {
       while (1) {
         switch (_context2.prev = _context2.next) {
           case 0:
-            return _context2.abrupt('return', _item2.default.find({ owner: userID }));
+            return _context2.abrupt('return', _item2.default.find({ owner: userID }).limit(limit));
 
           case 1:
           case 'end':
@@ -48,7 +48,7 @@ var getAllItems = exports.getAllItems = function () {
     }, _callee2, this);
   }));
 
-  return function getAllItems(_x5) {
+  return function getAllItems(_x5, _x6) {
     return _ref2.apply(this, arguments);
   };
 }();
@@ -75,7 +75,7 @@ var getSameTypeItems = exports.getSameTypeItems = function () {
     }, _callee3, this);
   }));
 
-  return function getSameTypeItems(_x6) {
+  return function getSameTypeItems(_x7) {
     return _ref3.apply(this, arguments);
   };
 }();
