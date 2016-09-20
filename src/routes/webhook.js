@@ -50,7 +50,8 @@ router.post('/', async (req, res, next) => {
           } else if (payload.startsWith('TYPE_')) {
             const type = payload.replace('TYPE_', '');
             const items = await getSameTypeItems(type);
-            await sendGenericMessage(sender, items);
+            const res = await sendGenericMessage(sender, items);
+            console.log(res);
           }
           continue;
         }
