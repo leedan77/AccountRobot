@@ -3,7 +3,7 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.getAllItems = exports.createNewItem = undefined;
+exports.getSameTypeItems = exports.getAllItems = exports.createNewItem = undefined;
 
 var createNewItem = exports.createNewItem = function () {
   var _ref = _asyncToGenerator(regeneratorRuntime.mark(function _callee(owner, name, type, price) {
@@ -56,6 +56,33 @@ var getAllItems = exports.getAllItems = function () {
 
   return function getAllItems(_x5) {
     return _ref2.apply(this, arguments);
+  };
+}();
+
+var getSameTypeItems = exports.getSameTypeItems = function () {
+  var _ref3 = _asyncToGenerator(regeneratorRuntime.mark(function _callee3(type) {
+    var items;
+    return regeneratorRuntime.wrap(function _callee3$(_context3) {
+      while (1) {
+        switch (_context3.prev = _context3.next) {
+          case 0:
+            _context3.next = 2;
+            return _item2.default.find({ type: type });
+
+          case 2:
+            items = _context3.sent;
+            return _context3.abrupt('return', items);
+
+          case 4:
+          case 'end':
+            return _context3.stop();
+        }
+      }
+    }, _callee3, this);
+  }));
+
+  return function getSameTypeItems(_x6) {
+    return _ref3.apply(this, arguments);
   };
 }();
 

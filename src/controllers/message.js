@@ -46,43 +46,34 @@ export function sendButtonMessage(sender, text, buttons) {
   return api.post('messages', messageData);
 }
 
-export function sendGenericMessage(sender) {
+export function sendGenericMessage(sender, items) {
+  let elements = items.map(item => {
+    cost += item.price;
+    return {
+      title: item.name,
+      subtitle: `$${item.price}`,
+      buttons: [{
+        type: "postback",
+        tiltle: "查看同種類的項目",
+        payload: `TYPE_${item.type}`,
+      }],
+    };
+  });
   let messageData = {
-    "attachment": {
-      "type": "template",
-      "payload": {
-        "template_type": "generic",
-        "elements": [{
-          "title": "First card",
-          "subtitle": "Element #1 of an hscroll",
-          "image_url": "http://messengerdemo.parseapp.com/img/rift.png",
-          "buttons": [{
-            "type": "web_url",
-            "url": "https://www.messenger.com",
-            "title": "web url"
-          }, {
-            "type": "postback",
-            "title": "Postback",
-            "payload": "Payload for first element in a generic bubble",
-          }],
-        }]
+    recipient: {
+      id: sender,
+    },
+    message: {
+      attachment: {
+        type: "template",
+        payload: {
+          template_type: "generic",
+          elements,
+        }
       }
     }
   }
-  return fetch(`${BASE_URL}`, {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify({
-      access_token: token,
-      recipient: {
-        id: sender,
-      },
-      message: messageData,
-    }),
-  })
-  .then(res => res.json());
+  return api.post('messages', messageData);
 }
 
 export function sendReceipt(sender, items) {
@@ -116,5 +107,5 @@ export function sendReceipt(sender, items) {
       }
     }
   };
-  api.post('messages', messageData);
+  return api.post('messages', messageData);
 }

@@ -34,9 +34,9 @@ export function initChatMenu() {
           "payload": "NEW_ITEM"
         },
         {
-          "type": "web_url",
-          "title": "聯絡我",
-          "url": "https://github.com/leedan77"
+          type: "postback",
+          title: "列出項目",
+          payload: "SHOW_CARD"
         }
       ]
     },

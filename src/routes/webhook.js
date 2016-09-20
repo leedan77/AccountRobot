@@ -3,9 +3,13 @@ import {
   sendTextMessage,
   sendGenericMessage,
   sendButtonMessage,
-  sendReceipt
+  sendReceipt,
 } from '../controllers/message';
-import { createNewItem, getAllItems } from '../controllers/item';
+import {
+  createNewItem,
+  getAllItems,
+  getSameTypeItems,
+} from '../controllers/item';
 import newItemFlow from '../controllers/flow/newItem';
 const router = new Router();
 
@@ -39,7 +43,14 @@ router.post('/', async (req, res, next) => {
           } else if (payload === 'SHOW_RECORD') {
             const items = await getAllItems(sender);
             console.log(items);
-            sendReceipt(sender, items);
+            await sendReceipt(sender, items);
+          } else if (payload === 'SHOW_CARD') {
+            const items = await getAllItems(sender);
+            await sendGenericMessage(sender, items);
+          } else if (payload.startsWith('TYPE_')) {
+            const type = payload.replace('TYPE_', '');
+            const items = await getSameTypeItems(type);
+            await sendGenericMessage(sender, items);
           }
           continue;
         }

@@ -67,44 +67,34 @@ function sendButtonMessage(sender, text, buttons) {
   return _api2.default.post('messages', messageData);
 }
 
-function sendGenericMessage(sender) {
+function sendGenericMessage(sender, items) {
+  var elements = items.map(function (item) {
+    cost += item.price;
+    return {
+      title: item.name,
+      subtitle: '$' + item.price,
+      buttons: [{
+        type: "postback",
+        tiltle: "查看同種類的項目",
+        payload: 'TYPE_' + item.type
+      }]
+    };
+  });
   var messageData = {
-    "attachment": {
-      "type": "template",
-      "payload": {
-        "template_type": "generic",
-        "elements": [{
-          "title": "First card",
-          "subtitle": "Element #1 of an hscroll",
-          "image_url": "http://messengerdemo.parseapp.com/img/rift.png",
-          "buttons": [{
-            "type": "web_url",
-            "url": "https://www.messenger.com",
-            "title": "web url"
-          }, {
-            "type": "postback",
-            "title": "Postback",
-            "payload": "Payload for first element in a generic bubble"
-          }]
-        }]
+    recipient: {
+      id: sender
+    },
+    message: {
+      attachment: {
+        type: "template",
+        payload: {
+          template_type: "generic",
+          elements: elements
+        }
       }
     }
   };
-  return (0, _isomorphicFetch2.default)('' + BASE_URL, {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json'
-    },
-    body: JSON.stringify({
-      access_token: _config.token,
-      recipient: {
-        id: sender
-      },
-      message: messageData
-    })
-  }).then(function (res) {
-    return res.json();
-  });
+  return _api2.default.post('messages', messageData);
 }
 
 function sendReceipt(sender, items) {
@@ -138,5 +128,5 @@ function sendReceipt(sender, items) {
       }
     }
   };
-  _api2.default.post('messages', messageData);
+  return _api2.default.post('messages', messageData);
 }

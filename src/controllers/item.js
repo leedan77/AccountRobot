@@ -10,3 +10,8 @@ export async function getAllItems(userID) {
   const items = await Item.find({ owner: userID });
   return items;
 }
+
+export async function getSameTypeItems(type) {
+  const items = await Item.find({ type });
+  return items;
+}
