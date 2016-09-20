@@ -1,5 +1,10 @@
 import { Router } from 'express';
-import { sendTextMessage, sendGenericMessage, sendButtonMessage } from '../controllers/message';
+import {
+  sendTextMessage,
+  sendGenericMessage,
+  sendButtonMessage,
+  sendReceipt
+} from '../controllers/message';
 import { createNewItem, getAllItems } from '../controllers/item';
 import newItemFlow from '../controllers/flow/newItem';
 const router = new Router();
