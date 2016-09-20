@@ -127,7 +127,7 @@ router.post('/', function () {
             }
 
             _context.next = 43;
-            return (0, _item.getAllItems)(sender);
+            return (0, _item.getAllItems)(sender).limit(10);
 
           case 43:
             _items = _context.sent;
