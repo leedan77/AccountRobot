@@ -69,7 +69,6 @@ function sendButtonMessage(sender, text, buttons) {
 
 function sendGenericMessage(sender, items) {
   var elements = items.map(function (item) {
-    cost += item.price;
     return {
       title: item.name,
       subtitle: '$' + item.price,

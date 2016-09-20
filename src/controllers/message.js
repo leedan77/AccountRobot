@@ -48,7 +48,6 @@ export function sendButtonMessage(sender, text, buttons) {
 
 export function sendGenericMessage(sender, items) {
   let elements = items.map(item => {
-    cost += item.price;
     return {
       title: item.name,
       subtitle: `$${item.price}`,
