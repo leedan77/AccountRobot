@@ -46,12 +46,13 @@ router.post('/', async (req, res, next) => {
             await sendReceipt(sender, items);
           } else if (payload === 'SHOW_CARD') {
             const items = await getAllItems(sender);
-            await sendGenericMessage(sender, items);
+            const res = await sendGenericMessage(sender, items);
+            console.log(res);
           } else if (payload.startsWith('TYPE_')) {
             const type = payload.replace('TYPE_', '');
             const items = await getSameTypeItems(type);
             const res = await sendGenericMessage(sender, items);
-            console.log(res);
+
           }
           continue;
         }
