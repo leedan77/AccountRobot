@@ -7,8 +7,7 @@ export async function createNewItem(owner, name, type, price) {
 }
 
 export async function getAllItems(userID) {
-  const items = await Item.find({ owner: userID });
-  return items;
+  return Item.find({ owner: userID });
 }
 
 export async function getSameTypeItems(type) {
