@@ -6,8 +6,8 @@ export async function createNewItem(owner, name, type, price) {
   return item;
 }
 
-export function getAllItems(userID, limit) {
-  return Item.find({ owner: userID });
+export async function getAllItems(userID, limit) {
+  return Item.find({ owner: userID }).limit(limit);
 }
 
 export async function getSameTypeItems(type) {
