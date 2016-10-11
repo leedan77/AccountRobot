@@ -10,6 +10,7 @@ import {
   getAllItems,
   getSameTypeItems,
 } from '../controllers/item';
+import { uploadPhoto } from '../controllers/upload';
 import newItemFlow from '../controllers/flow/newItem';
 const router = new Router();
 
@@ -42,17 +43,14 @@ router.post('/', async (req, res, next) => {
             newItemFlag = false;
           } else if (payload === 'SHOW_RECORD') {
             const items = await getAllItems(sender);
-            console.log(items);
             await sendReceipt(sender, items);
           } else if (payload === 'SHOW_CARD') {
             const items = await getAllItems(sender, 10);
             const res = await sendGenericMessage(sender, items);
-            console.log(res);
           } else if (payload.startsWith('TYPE_')) {
             const type = payload.replace('TYPE_', '');
             const items = await getSameTypeItems(type);
             const res = await sendGenericMessage(sender, items);
-
           }
           continue;
         }
@@ -62,14 +60,14 @@ router.post('/', async (req, res, next) => {
             const isDone = itemFlow.next(text).done;
             if (isDone) {
               newItemFlag = false;
-            } /* else {
-              const buttons = [{
-                type: "postback",
-                title: "取消新增項目",
-                payload: "CANCEL_ITEM"
-              }];
-              const result = await sendButtonMessage(sender, "錯誤的格式, 請依序輸入: 商品名稱 價錢 類型", buttons);
-            } */
+            } 
+          }
+        }
+        // attachment
+        if (event.message.attachments) {
+          let attachments = event.message.attachments;
+          for (let attachment of attachments) {
+            uploadPhoto(attachment.payload.url);
           }
         }
       }

@@ -37,6 +37,11 @@ export function initChatMenu() {
           type: "postback",
           title: "列出項目",
           payload: "SHOW_CARD"
+        },
+        {
+          type: "postback",
+          title: "列出所有類別",
+          payload: "SHOW_ALL_TYPE",
         }
       ]
     },

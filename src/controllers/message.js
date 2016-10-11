@@ -3,7 +3,7 @@ import url from 'url';
 import { token } from '../core/config';
 import api from '../core/api';
 
-const BASE_URL = 'https://graph.facebook.com/v2.6/me/messages'
+const BASE_URL = 'https://graph.facebook.com/v2.6/me/messages';
 
 
 export function sendTextMessage(sender, text) {
@@ -108,3 +108,5 @@ export function sendReceipt(sender, items) {
   };
   return api.post('messages', messageData);
 }
+
+
