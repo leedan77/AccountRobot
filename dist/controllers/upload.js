@@ -11,7 +11,7 @@ var _isomorphicFetch2 = _interopRequireDefault(_isomorphicFetch);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-var BASE_URL = 'http://jazzlion.com:4000';
+var BASE_URL = 'http://jazzlion.com:4000/photo';
 
 function uploadPhoto(url) {
   return (0, _isomorphicFetch2.default)('' + BASE_URL, {

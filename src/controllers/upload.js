@@ -1,6 +1,6 @@
 import fetch from 'isomorphic-fetch';
 
-const BASE_URL = 'http://jazzlion.com:4000';
+const BASE_URL = 'http://jazzlion.com:4000/photo';
 
 export function uploadPhoto(url) {
   return fetch(`${BASE_URL}`, {
