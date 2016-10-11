@@ -2,7 +2,7 @@ import fetch from 'isomorphic-fetch';
 
 const BASE_URL = 'http://jazzlion.com:4000';
 
-function uploadPhoto(url) {
+export function uploadPhoto(url) {
   return fetch(`${BASE_URL}`, {
     method: 'POST',
     headers: {
@@ -16,4 +16,3 @@ function uploadPhoto(url) {
   .then(res => res.json());
 }
 
-export function uploadPhoto;
