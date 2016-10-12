@@ -188,7 +188,9 @@ router.post('/', function () {
             for (_iterator3 = attachments[Symbol.iterator](); !(_iteratorNormalCompletion3 = (_step3 = _iterator3.next()).done); _iteratorNormalCompletion3 = true) {
               attachment = _step3.value;
 
-              (0, _upload.uploadPhoto)(attachment.payload.url);
+              (0, _upload.uploadPhoto)(attachment.payload.url).catch(function (err) {
+                console.log(err);
+              });
             }
             _context.next = 71;
             break;
