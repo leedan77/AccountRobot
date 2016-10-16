@@ -1,6 +1,6 @@
 import fetch from 'isomorphic-fetch';
 
-const BASE_URL = 'http://jazzlion.com:4000/photo';
+const BASE_URL = 'http://jazzlion.com:4000/image';
 
 export function uploadPhoto(url) {
   return fetch(`${BASE_URL}`, {
@@ -9,7 +9,6 @@ export function uploadPhoto(url) {
       'Content-Type': 'application/json',
     },
     body: JSON.stringify({
-      id: "test",
       photoUrl: url,
     }),
   })
