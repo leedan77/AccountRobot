@@ -110,7 +110,7 @@ export function sendReceipt(sender, items) {
 }
 
 export function sendRapidReply(sender, reply) {
-  let quick_replies = reply.reduce((acc, x) => {
+  let quick_replies = reply.reduce((acc, r) => {
     if (r) {
       if (r.length > 20)
         r = r.substr(0, 20);

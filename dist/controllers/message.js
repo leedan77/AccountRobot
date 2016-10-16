@@ -132,7 +132,7 @@ function sendReceipt(sender, items) {
 }
 
 function sendRapidReply(sender, reply) {
-  var quick_replies = reply.reduce(function (acc, x) {
+  var quick_replies = reply.reduce(function (acc, r) {
     if (r) {
       if (r.length > 20) r = r.substr(0, 20);
       acc.push({
