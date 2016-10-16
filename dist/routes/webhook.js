@@ -174,7 +174,7 @@ router.post('/', function () {
             }
             // attachment
 
-            if (!event.message.attachments) {
+            if (!(event.message && event.message.attachments)) {
               _context.next = 93;
               break;
             }

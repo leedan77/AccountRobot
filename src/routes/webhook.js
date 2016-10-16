@@ -65,7 +65,7 @@ router.post('/', async (req, res, next) => {
           }
         }
         // attachment
-        if (event.message.attachments) {
+        if (event.message && event.message.attachments) {
           let attachments = event.message.attachments;
           for (let attachment of attachments) {
             const { result } = await uploadPhoto(attachment.payload.url);
