@@ -110,15 +110,29 @@ export function sendReceipt(sender, items) {
 }
 
 export function sendRapidReply(sender, reply) {
-  let quick_replies = reply.map(r => {
+  let quick_replies = reply.reduce((acc, x) => {
     if (r) {
+      if (r.length > 20)
+        r = r.substr(0, 20);
+      acc.push({
+        content_type: 'text',
+        title: r,
+        payload: 'QUICK_REPLY',
+      });
+    }
+    return acc;
+  }, []);
+  /*let quick_replies = reply.filter(()).map(r => {
+    if (r) {
+      if (r.length > 20)
+        r = r.substr(0, 20);
       return {
         content_type: 'text',
         title: r,
         payload: 'QUICK_REPLY',
       };
     }
-  });
+  });*/
   console.log(quick_replies);
   let messageData = {
     recipient: {

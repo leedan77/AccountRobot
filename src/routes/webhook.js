@@ -70,7 +70,8 @@ router.post('/', async (req, res, next) => {
           for (let attachment of attachments) {
             const { result } = await uploadPhoto(attachment.payload.url);
             console.log(result);
-            await sendRapidReply(sender, result);
+            const res = await sendRapidReply(sender, result);
+            console.log(res);
           }
         }
       }

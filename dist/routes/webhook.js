@@ -35,7 +35,7 @@ var itemFlow = void 0;
 
 router.post('/', function () {
   var _ref = _asyncToGenerator(regeneratorRuntime.mark(function _callee(req, res, next) {
-    var _iteratorNormalCompletion, _didIteratorError, _iteratorError, _iterator, _step, entry, _iteratorNormalCompletion2, _didIteratorError2, _iteratorError2, _iterator2, _step2, event, sender, payload, items, _items, _res, type, _items2, _res2, text, isDone, attachments, _iteratorNormalCompletion3, _didIteratorError3, _iteratorError3, _iterator3, _step3, attachment, _ref2, result;
+    var _iteratorNormalCompletion, _didIteratorError, _iteratorError, _iterator, _step, entry, _iteratorNormalCompletion2, _didIteratorError2, _iteratorError2, _iterator2, _step2, event, sender, payload, items, _items, _res, type, _items2, _res2, text, isDone, attachments, _iteratorNormalCompletion3, _didIteratorError3, _iteratorError3, _iterator3, _step3, attachment, _ref2, result, _res3;
 
     return regeneratorRuntime.wrap(function _callee$(_context) {
       while (1) {
@@ -50,7 +50,7 @@ router.post('/', function () {
 
           case 6:
             if (_iteratorNormalCompletion = (_step = _iterator.next()).done) {
-              _context.next = 111;
+              _context.next = 113;
               break;
             }
 
@@ -63,7 +63,7 @@ router.post('/', function () {
 
           case 13:
             if (_iteratorNormalCompletion2 = (_step2 = _iterator2.next()).done) {
-              _context.next = 94;
+              _context.next = 96;
               break;
             }
 
@@ -158,7 +158,7 @@ router.post('/', function () {
             _res2 = _context.sent;
 
           case 56:
-            return _context.abrupt('continue', 91);
+            return _context.abrupt('continue', 93);
 
           case 57:
             if (event.message && event.message.text && !event.message.is_echo) {
@@ -175,7 +175,7 @@ router.post('/', function () {
             // attachment
 
             if (!event.message.attachments) {
-              _context.next = 91;
+              _context.next = 93;
               break;
             }
 
@@ -188,7 +188,7 @@ router.post('/', function () {
 
           case 65:
             if (_iteratorNormalCompletion3 = (_step3 = _iterator3.next()).done) {
-              _context.next = 77;
+              _context.next = 79;
               break;
             }
 
@@ -205,139 +205,144 @@ router.post('/', function () {
             return (0, _message.sendRapidReply)(sender, result);
 
           case 74:
+            _res3 = _context.sent;
+
+            console.log(_res3);
+
+          case 76:
             _iteratorNormalCompletion3 = true;
             _context.next = 65;
             break;
 
-          case 77:
-            _context.next = 83;
+          case 79:
+            _context.next = 85;
             break;
 
-          case 79:
-            _context.prev = 79;
+          case 81:
+            _context.prev = 81;
             _context.t0 = _context['catch'](63);
             _didIteratorError3 = true;
             _iteratorError3 = _context.t0;
 
-          case 83:
-            _context.prev = 83;
-            _context.prev = 84;
+          case 85:
+            _context.prev = 85;
+            _context.prev = 86;
 
             if (!_iteratorNormalCompletion3 && _iterator3.return) {
               _iterator3.return();
             }
 
-          case 86:
-            _context.prev = 86;
+          case 88:
+            _context.prev = 88;
 
             if (!_didIteratorError3) {
-              _context.next = 89;
+              _context.next = 91;
               break;
             }
 
             throw _iteratorError3;
 
-          case 89:
-            return _context.finish(86);
-
-          case 90:
-            return _context.finish(83);
-
           case 91:
+            return _context.finish(88);
+
+          case 92:
+            return _context.finish(85);
+
+          case 93:
             _iteratorNormalCompletion2 = true;
             _context.next = 13;
             break;
 
-          case 94:
-            _context.next = 100;
+          case 96:
+            _context.next = 102;
             break;
 
-          case 96:
-            _context.prev = 96;
+          case 98:
+            _context.prev = 98;
             _context.t1 = _context['catch'](11);
             _didIteratorError2 = true;
             _iteratorError2 = _context.t1;
 
-          case 100:
-            _context.prev = 100;
-            _context.prev = 101;
+          case 102:
+            _context.prev = 102;
+            _context.prev = 103;
 
             if (!_iteratorNormalCompletion2 && _iterator2.return) {
               _iterator2.return();
             }
 
-          case 103:
-            _context.prev = 103;
+          case 105:
+            _context.prev = 105;
 
             if (!_didIteratorError2) {
-              _context.next = 106;
+              _context.next = 108;
               break;
             }
 
             throw _iteratorError2;
 
-          case 106:
-            return _context.finish(103);
-
-          case 107:
-            return _context.finish(100);
-
           case 108:
+            return _context.finish(105);
+
+          case 109:
+            return _context.finish(102);
+
+          case 110:
             _iteratorNormalCompletion = true;
             _context.next = 6;
             break;
 
-          case 111:
-            _context.next = 117;
+          case 113:
+            _context.next = 119;
             break;
 
-          case 113:
-            _context.prev = 113;
+          case 115:
+            _context.prev = 115;
             _context.t2 = _context['catch'](4);
             _didIteratorError = true;
             _iteratorError = _context.t2;
 
-          case 117:
-            _context.prev = 117;
-            _context.prev = 118;
+          case 119:
+            _context.prev = 119;
+            _context.prev = 120;
 
             if (!_iteratorNormalCompletion && _iterator.return) {
               _iterator.return();
             }
 
-          case 120:
-            _context.prev = 120;
+          case 122:
+            _context.prev = 122;
 
             if (!_didIteratorError) {
-              _context.next = 123;
+              _context.next = 125;
               break;
             }
 
             throw _iteratorError;
 
-          case 123:
-            return _context.finish(120);
-
-          case 124:
-            return _context.finish(117);
-
           case 125:
+            return _context.finish(122);
+
+          case 126:
+            return _context.finish(119);
+
+          case 127:
             res.sendStatus(200);
-            _context.next = 131;
+            _context.next = 133;
             break;
 
-          case 128:
-            _context.prev = 128;
+          case 130:
+            _context.prev = 130;
             _context.t3 = _context['catch'](0);
 
             next(_context.t3);
 
-          case 131:
+          case 133:
           case 'end':
             return _context.stop();
         }
       }
-    }, _callee, undefined, [[0, 128], [4, 113, 117, 125], [11, 96, 100, 108], [63, 79, 83, 91], [84,, 86, 90], [101,, 103, 107], [118,, 120, 124]]);
+    }, _callee, undefined, [[0, 130], [4, 115, 119, 127], [11, 98, 102, 110], [63, 81, 85, 93], [86,, 88, 92], [103,, 105, 109], [120,, 122, 126]]);
   }));
 
   return function (_x, _x2, _x3) {

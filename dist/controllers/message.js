@@ -132,15 +132,28 @@ function sendReceipt(sender, items) {
 }
 
 function sendRapidReply(sender, reply) {
-  var quick_replies = reply.map(function (r) {
+  var quick_replies = reply.reduce(function (acc, x) {
     if (r) {
-      return {
+      if (r.length > 20) r = r.substr(0, 20);
+      acc.push({
         content_type: 'text',
         title: r,
         payload: 'QUICK_REPLY'
+      });
+    }
+    return acc;
+  }, []);
+  /*let quick_replies = reply.filter(()).map(r => {
+    if (r) {
+      if (r.length > 20)
+        r = r.substr(0, 20);
+      return {
+        content_type: 'text',
+        title: r,
+        payload: 'QUICK_REPLY',
       };
     }
-  });
+  });*/
   console.log(quick_replies);
   var messageData = {
     recipient: {
