@@ -68,7 +68,7 @@ router.post('/', async (req, res, next) => {
         if (event.message.attachments) {
           let attachments = event.message.attachments;
           for (let attachment of attachments) {
-            const result = await uploadPhoto(attachment.payload.url);
+            const { result } = await uploadPhoto(attachment.payload.url);
             console.log(result);
             sendRapidReply(result);
           }
