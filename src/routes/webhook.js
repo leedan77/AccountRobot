@@ -22,8 +22,7 @@ router.get('/', (req, res) => {
     res.send('Error, wrong token');
 });
 
-let newItemFlag = false;
-
+let newItemFlag = 0;
 let itemFlow;
 
 router.post('/', async (req, res, next) => {
@@ -36,12 +35,11 @@ router.post('/', async (req, res, next) => {
           let payload = event.postback.payload;
           if (payload === 'NEW_ITEM') {
             sendTextMessage(sender, "請輸入商品名稱");
-            newItemFlag = true;
             itemFlow = newItemFlow(sender);
-            itemFlow.next();
+            newItemFlag = itemFlow.next().value;
           } else if (payload === 'CANCEL_ITEM') {
             sendTextMessage(sender, "已取消新增項目");
-            newItemFlag = false;
+            newItemFlag = 0;
           } else if (payload === 'SHOW_RECORD') {
             const items = await getAllItems(sender);
             await sendReceipt(sender, items);
@@ -58,20 +56,17 @@ router.post('/', async (req, res, next) => {
         if (event.message && event.message.text && !event.message.is_echo) {
           let text = event.message.text;       
           if (newItemFlag) {
-            const isDone = itemFlow.next(text).done;
-            if (isDone) {
-              newItemFlag = false;
-            } 
+            const newItemFlag = itemFlow.next(text).value;
           }
         }
         // attachment
         if (event.message && event.message.attachments) {
-          let attachments = event.message.attachments;
-          for (let attachment of attachments) {
-            const { result } = await uploadPhoto(attachment.payload.url);
-            console.log(result);
-            const res = await sendRapidReply(sender, result);
-            console.log(res);
+          if (newItemFlag === 'name') {
+            let attachments = event.message.attachments;
+            for (let attachment of attachments) {
+              const { result } = await uploadPhoto(attachment.payload.url);
+              const res = await sendRapidReply(sender, result);
+            }
           }
         }
       }

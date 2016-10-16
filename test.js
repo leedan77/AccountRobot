@@ -1,12 +1,13 @@
-let a = ["abc", ""];
 
-let b = a.reduce((acc, x) => {
-  console.log(x);
-  if (x) {
-    console.log(acc);
-    acc.push(x);
-  }
-  return acc;
-}, []);
+function* idMaker(){
+  var index = 0;
+  while(index < 3)
+    yield index++;
+}
 
-console.log(b);
+var gen = idMaker();
+gen.next();
+console.log(gen.next()); // 0
+console.log(gen.next().value); // 1
+console.log(gen.next().value); // 2
+console.log(gen.next().value);
