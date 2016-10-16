@@ -1,6 +1,8 @@
 import mongoose from 'mongoose';
 import { dbUrl } from './config';
 
+mongoose.Promise = Promise;
+
 export function connectDb() {
   return new Promise((resolve, reject) => {
     mongoose.connect(dbUrl, (err) => {
@@ -11,7 +13,7 @@ export function connectDb() {
       }
     });
   });
-}
+};
 
 export function disconnectDb() {
   return new Promise((resolve, reject) => {
@@ -23,4 +25,4 @@ export function disconnectDb() {
       }
     });
   });
-}
+};

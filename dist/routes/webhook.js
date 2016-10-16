@@ -10,9 +10,15 @@ var _message = require('../controllers/message');
 
 var _item = require('../controllers/item');
 
-function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, arguments); return new Promise(function (resolve, reject) { function step(key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { return Promise.resolve(value).then(function (value) { return step("next", value); }, function (err) { return step("throw", err); }); } } return step("next"); }); }; }
+var _upload = require('../controllers/upload');
 
-var _marked = [newItemFlow].map(regeneratorRuntime.mark);
+var _newItem = require('../controllers/flow/newItem');
+
+var _newItem2 = _interopRequireDefault(_newItem);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, arguments); return new Promise(function (resolve, reject) { function step(key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { return Promise.resolve(value).then(function (value) { return step("next", value); }, function (err) { return step("throw", err); }); } } return step("next"); }); }; }
 
 var router = new _express.Router();
 
@@ -23,69 +29,27 @@ router.get('/', function (req, res) {
   res.send('Error, wrong token');
 });
 
-var newItemFlag = false;
-
-function newItemFlow(sender) {
-  var name, price, type;
-  return regeneratorRuntime.wrap(function newItemFlow$(_context) {
-    while (1) {
-      switch (_context.prev = _context.next) {
-        case 0:
-          _context.next = 2;
-          return "name";
-
-        case 2:
-          name = _context.sent;
-
-          (0, _message.sendTextMessage)(sender, '商品名稱: ' + name);
-          _context.next = 6;
-          return "price";
-
-        case 6:
-          price = _context.sent;
-
-          (0, _message.sendTextMessage)(sender, '價錢: ' + price);
-          _context.next = 10;
-          return "type";
-
-        case 10:
-          type = _context.sent;
-
-          (0, _message.sendTextMessage)(sender, '類型: ' + type);
-          (0, _item.createNewItem)(sender, name, type, price).then(function (res) {
-            (0, _message.sendTextMessage)(sender, '已儲存 新的項目: ' + name + ', 價錢: ' + price + ', 種類: ' + type);
-          }).catch(function (err) {
-            console.error(err);
-          });
-
-        case 13:
-        case 'end':
-          return _context.stop();
-      }
-    }
-  }, _marked[0], this);
-}
-
+var newItemFlag = 0;
 var itemFlow = void 0;
 
 router.post('/', function () {
   var _ref = _asyncToGenerator(regeneratorRuntime.mark(function _callee(req, res, next) {
-    var _iteratorNormalCompletion, _didIteratorError, _iteratorError, _iterator, _step, entry, _iteratorNormalCompletion2, _didIteratorError2, _iteratorError2, _iterator2, _step2, event, sender, payload, text, arrStr, _iteratorNormalCompletion3, _didIteratorError3, _iteratorError3, _iterator3, _step3, str, isDone, buttons, result;
+    var _iteratorNormalCompletion, _didIteratorError, _iteratorError, _iterator, _step, entry, _iteratorNormalCompletion2, _didIteratorError2, _iteratorError2, _iterator2, _step2, event, sender, payload, items, _items, _res, type, _items2, _res2, text, _newItemFlag, attachments, _iteratorNormalCompletion3, _didIteratorError3, _iteratorError3, _iterator3, _step3, attachment, _ref2, result, _res3;
 
-    return regeneratorRuntime.wrap(function _callee$(_context2) {
+    return regeneratorRuntime.wrap(function _callee$(_context) {
       while (1) {
-        switch (_context2.prev = _context2.next) {
+        switch (_context.prev = _context.next) {
           case 0:
-            _context2.prev = 0;
+            _context.prev = 0;
             _iteratorNormalCompletion = true;
             _didIteratorError = false;
             _iteratorError = undefined;
-            _context2.prev = 4;
+            _context.prev = 4;
             _iterator = req.body.entry[Symbol.iterator]();
 
           case 6:
             if (_iteratorNormalCompletion = (_step = _iterator.next()).done) {
-              _context2.next = 80;
+              _context.next = 111;
               break;
             }
 
@@ -93,12 +57,12 @@ router.post('/', function () {
             _iteratorNormalCompletion2 = true;
             _didIteratorError2 = false;
             _iteratorError2 = undefined;
-            _context2.prev = 11;
+            _context.prev = 11;
             _iterator2 = entry.messaging[Symbol.iterator]();
 
           case 13:
             if (_iteratorNormalCompletion2 = (_step2 = _iterator2.next()).done) {
-              _context2.next = 63;
+              _context.next = 94;
               break;
             }
 
@@ -108,216 +72,272 @@ router.post('/', function () {
             console.log(JSON.stringify(event.message));
 
             if (!event.postback) {
-              _context2.next = 21;
+              _context.next = 56;
               break;
             }
 
             payload = event.postback.payload;
 
-            if (payload === 'NEW_ITEM') {
-              (0, _message.sendTextMessage)(sender, "請依序輸入: 商品名稱 價錢 類型");
-              newItemFlag = true;
-              itemFlow = newItemFlow(sender);
-              itemFlow.next();
-            } else if (payload === 'CANCEL_ITEM') {
-              (0, _message.sendTextMessage)(sender, "已取消新增項目");
-              newItemFlag = false;
-            }
-            return _context2.abrupt('continue', 60);
-
-          case 21:
-            if (!(event.message && event.message.text && !event.message.is_echo)) {
-              _context2.next = 60;
+            if (!(payload === 'NEW_ITEM')) {
+              _context.next = 25;
               break;
             }
 
-            text = event.message.text;
+            (0, _message.sendTextMessage)(sender, "請輸入商品名稱");
+            itemFlow = (0, _newItem2.default)(sender);
+            newItemFlag = itemFlow.next().value;
+            _context.next = 55;
+            break;
 
-            if (!newItemFlag) {
-              _context2.next = 60;
+          case 25:
+            if (!(payload === 'CANCEL_ITEM')) {
+              _context.next = 30;
               break;
             }
 
-            arrStr = text.split(' ');
+            (0, _message.sendTextMessage)(sender, "已取消新增項目");
+            newItemFlag = 0;
+            _context.next = 55;
+            break;
 
-            if (!(arrStr.length <= 3)) {
-              _context2.next = 56;
+          case 30:
+            if (!(payload === 'SHOW_RECORD')) {
+              _context.next = 38;
               break;
             }
 
+            _context.next = 33;
+            return (0, _item.getAllItems)(sender);
+
+          case 33:
+            items = _context.sent;
+            _context.next = 36;
+            return (0, _message.sendReceipt)(sender, items);
+
+          case 36:
+            _context.next = 55;
+            break;
+
+          case 38:
+            if (!(payload === 'SHOW_CARD')) {
+              _context.next = 47;
+              break;
+            }
+
+            _context.next = 41;
+            return (0, _item.getAllItems)(sender, 10);
+
+          case 41:
+            _items = _context.sent;
+            _context.next = 44;
+            return (0, _message.sendGenericMessage)(sender, _items);
+
+          case 44:
+            _res = _context.sent;
+            _context.next = 55;
+            break;
+
+          case 47:
+            if (!payload.startsWith('TYPE_')) {
+              _context.next = 55;
+              break;
+            }
+
+            type = payload.replace('TYPE_', '');
+            _context.next = 51;
+            return (0, _item.getSameTypeItems)(type);
+
+          case 51:
+            _items2 = _context.sent;
+            _context.next = 54;
+            return (0, _message.sendGenericMessage)(sender, _items2);
+
+          case 54:
+            _res2 = _context.sent;
+
+          case 55:
+            return _context.abrupt('continue', 91);
+
+          case 56:
+            if (event.message && event.message.text && !event.message.is_echo) {
+              text = event.message.text;
+
+              if (newItemFlag) {
+                _newItemFlag = itemFlow.next(text).value;
+              }
+            }
+            // attachment
+
+            if (!(event.message && event.message.attachments)) {
+              _context.next = 91;
+              break;
+            }
+
+            if (!(newItemFlag === 'name')) {
+              _context.next = 91;
+              break;
+            }
+
+            attachments = event.message.attachments;
             _iteratorNormalCompletion3 = true;
             _didIteratorError3 = false;
             _iteratorError3 = undefined;
-            _context2.prev = 29;
-            _iterator3 = arrStr[Symbol.iterator]();
+            _context.prev = 63;
+            _iterator3 = attachments[Symbol.iterator]();
 
-          case 31:
+          case 65:
             if (_iteratorNormalCompletion3 = (_step3 = _iterator3.next()).done) {
-              _context2.next = 40;
+              _context.next = 77;
               break;
             }
 
-            str = _step3.value;
-            isDone = itemFlow.next(str).done;
+            attachment = _step3.value;
+            _context.next = 69;
+            return (0, _upload.uploadPhoto)(attachment.payload.url);
 
-            if (!isDone) {
-              _context2.next = 37;
-              break;
-            }
+          case 69:
+            _ref2 = _context.sent;
+            result = _ref2.result;
+            _context.next = 73;
+            return (0, _message.sendRapidReply)(sender, result);
 
-            newItemFlag = false;
-            return _context2.abrupt('break', 40);
+          case 73:
+            _res3 = _context.sent;
 
-          case 37:
+          case 74:
             _iteratorNormalCompletion3 = true;
-            _context2.next = 31;
+            _context.next = 65;
             break;
 
-          case 40:
-            _context2.next = 46;
+          case 77:
+            _context.next = 83;
             break;
 
-          case 42:
-            _context2.prev = 42;
-            _context2.t0 = _context2['catch'](29);
+          case 79:
+            _context.prev = 79;
+            _context.t0 = _context['catch'](63);
             _didIteratorError3 = true;
-            _iteratorError3 = _context2.t0;
+            _iteratorError3 = _context.t0;
 
-          case 46:
-            _context2.prev = 46;
-            _context2.prev = 47;
+          case 83:
+            _context.prev = 83;
+            _context.prev = 84;
 
             if (!_iteratorNormalCompletion3 && _iterator3.return) {
               _iterator3.return();
             }
 
-          case 49:
-            _context2.prev = 49;
+          case 86:
+            _context.prev = 86;
 
             if (!_didIteratorError3) {
-              _context2.next = 52;
+              _context.next = 89;
               break;
             }
 
             throw _iteratorError3;
 
-          case 52:
-            return _context2.finish(49);
+          case 89:
+            return _context.finish(86);
 
-          case 53:
-            return _context2.finish(46);
+          case 90:
+            return _context.finish(83);
 
-          case 54:
-            _context2.next = 60;
-            break;
-
-          case 56:
-            buttons = [{
-              type: "postback",
-              title: "取消新增項目",
-              payload: "CANCEL_ITEM"
-            }];
-            _context2.next = 59;
-            return (0, _message.sendButtonMessage)(sender, "錯誤的格式, 請依序輸入: 商品名稱 價錢 類型", buttons);
-
-          case 59:
-            result = _context2.sent;
-
-          case 60:
+          case 91:
             _iteratorNormalCompletion2 = true;
-            _context2.next = 13;
+            _context.next = 13;
             break;
 
-          case 63:
-            _context2.next = 69;
+          case 94:
+            _context.next = 100;
             break;
 
-          case 65:
-            _context2.prev = 65;
-            _context2.t1 = _context2['catch'](11);
+          case 96:
+            _context.prev = 96;
+            _context.t1 = _context['catch'](11);
             _didIteratorError2 = true;
-            _iteratorError2 = _context2.t1;
+            _iteratorError2 = _context.t1;
 
-          case 69:
-            _context2.prev = 69;
-            _context2.prev = 70;
+          case 100:
+            _context.prev = 100;
+            _context.prev = 101;
 
             if (!_iteratorNormalCompletion2 && _iterator2.return) {
               _iterator2.return();
             }
 
-          case 72:
-            _context2.prev = 72;
+          case 103:
+            _context.prev = 103;
 
             if (!_didIteratorError2) {
-              _context2.next = 75;
+              _context.next = 106;
               break;
             }
 
             throw _iteratorError2;
 
-          case 75:
-            return _context2.finish(72);
+          case 106:
+            return _context.finish(103);
 
-          case 76:
-            return _context2.finish(69);
+          case 107:
+            return _context.finish(100);
 
-          case 77:
+          case 108:
             _iteratorNormalCompletion = true;
-            _context2.next = 6;
+            _context.next = 6;
             break;
 
-          case 80:
-            _context2.next = 86;
+          case 111:
+            _context.next = 117;
             break;
 
-          case 82:
-            _context2.prev = 82;
-            _context2.t2 = _context2['catch'](4);
+          case 113:
+            _context.prev = 113;
+            _context.t2 = _context['catch'](4);
             _didIteratorError = true;
-            _iteratorError = _context2.t2;
+            _iteratorError = _context.t2;
 
-          case 86:
-            _context2.prev = 86;
-            _context2.prev = 87;
+          case 117:
+            _context.prev = 117;
+            _context.prev = 118;
 
             if (!_iteratorNormalCompletion && _iterator.return) {
               _iterator.return();
             }
 
-          case 89:
-            _context2.prev = 89;
+          case 120:
+            _context.prev = 120;
 
             if (!_didIteratorError) {
-              _context2.next = 92;
+              _context.next = 123;
               break;
             }
 
             throw _iteratorError;
 
-          case 92:
-            return _context2.finish(89);
+          case 123:
+            return _context.finish(120);
 
-          case 93:
-            return _context2.finish(86);
+          case 124:
+            return _context.finish(117);
 
-          case 94:
+          case 125:
             res.sendStatus(200);
-            _context2.next = 100;
+            _context.next = 131;
             break;
 
-          case 97:
-            _context2.prev = 97;
-            _context2.t3 = _context2['catch'](0);
+          case 128:
+            _context.prev = 128;
+            _context.t3 = _context['catch'](0);
 
-            next(_context2.t3);
+            next(_context.t3);
 
-          case 100:
+          case 131:
           case 'end':
-            return _context2.stop();
+            return _context.stop();
         }
       }
-    }, _callee, undefined, [[0, 97], [4, 82, 86, 94], [11, 65, 69, 77], [29, 42, 46, 54], [47,, 49, 53], [70,, 72, 76], [87,, 89, 93]]);
+    }, _callee, undefined, [[0, 128], [4, 113, 117, 125], [11, 96, 100, 108], [63, 79, 83, 91], [84,, 86, 90], [101,, 103, 107], [118,, 120, 124]]);
   }));
 
   return function (_x, _x2, _x3) {

@@ -6,6 +6,8 @@ Object.defineProperty(exports, "__esModule", {
 exports.sendTextMessage = sendTextMessage;
 exports.sendButtonMessage = sendButtonMessage;
 exports.sendGenericMessage = sendGenericMessage;
+exports.sendReceipt = sendReceipt;
+exports.sendRapidReply = sendRapidReply;
 
 var _isomorphicFetch = require('isomorphic-fetch');
 
@@ -66,42 +68,101 @@ function sendButtonMessage(sender, text, buttons) {
   return _api2.default.post('messages', messageData);
 }
 
-function sendGenericMessage(sender) {
+function sendGenericMessage(sender, items) {
+  var elements = items.map(function (item) {
+    return {
+      title: item.name,
+      subtitle: '$' + item.price,
+      buttons: [{
+        type: "postback",
+        title: "查看同種類的項目",
+        payload: 'TYPE_' + item.type
+      }]
+    };
+  });
   var messageData = {
-    "attachment": {
-      "type": "template",
-      "payload": {
-        "template_type": "generic",
-        "elements": [{
-          "title": "First card",
-          "subtitle": "Element #1 of an hscroll",
-          "image_url": "http://messengerdemo.parseapp.com/img/rift.png",
-          "buttons": [{
-            "type": "web_url",
-            "url": "https://www.messenger.com",
-            "title": "web url"
-          }, {
-            "type": "postback",
-            "title": "Postback",
-            "payload": "Payload for first element in a generic bubble"
-          }]
-        }]
+    recipient: {
+      id: sender
+    },
+    message: {
+      attachment: {
+        type: "template",
+        payload: {
+          template_type: "generic",
+          elements: elements
+        }
       }
     }
   };
-  return (0, _isomorphicFetch2.default)('' + BASE_URL, {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json'
-    },
-    body: JSON.stringify({
-      access_token: _config.token,
-      recipient: {
-        id: sender
-      },
-      message: messageData
-    })
-  }).then(function (res) {
-    return res.json();
+  return _api2.default.post('messages', messageData);
+}
+
+function sendReceipt(sender, items) {
+  var cost = 0;
+  var elements = items.map(function (item) {
+    cost += item.price;
+    return {
+      title: item.name,
+      subtitle: item.type,
+      price: item.price
+    };
   });
+  var messageData = {
+    recipient: {
+      id: sender
+    },
+    message: {
+      attachment: {
+        type: "template",
+        payload: {
+          template_type: "receipt",
+          recipient_name: sender,
+          order_number: "77",
+          currency: "TWD",
+          payment_method: "現金",
+          elements: elements,
+          summary: {
+            total_cost: cost
+          }
+        }
+      }
+    }
+  };
+  return _api2.default.post('messages', messageData);
+}
+
+function sendRapidReply(sender, reply) {
+  var quick_replies = reply.reduce(function (acc, r) {
+    if (r) {
+      if (r.length > 20) r = r.substr(0, 20);
+      acc.push({
+        content_type: 'text',
+        title: r,
+        payload: 'QUICK_REPLY'
+      });
+    }
+    return acc;
+  }, []);
+  /*let quick_replies = reply.filter(()).map(r => {
+    if (r) {
+      if (r.length > 20)
+        r = r.substr(0, 20);
+      return {
+        content_type: 'text',
+        title: r,
+        payload: 'QUICK_REPLY',
+      };
+    }
+  });*/
+  console.log(quick_replies);
+  var messageData = {
+    recipient: {
+      id: sender
+    },
+    message: {
+      text: "選取符合的名字",
+      quick_replies: quick_replies
+    }
+  };
+  return _api2.default.post('messages', messageData);
 }

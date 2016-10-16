@@ -38,16 +38,20 @@ function initChatMenu() {
     thread_state: 'existing_thread',
     call_to_actions: [{
       type: 'postback',
-      title: 'Help',
-      "payload": "DEVELOPER_DEFINED_PAYLOAD_FOR_HELP"
+      title: '我的紀錄',
+      payload: 'SHOW_RECORD'
     }, {
       "type": "postback",
       "title": "新增新的項目",
       "payload": "NEW_ITEM"
     }, {
-      "type": "web_url",
-      "title": "聯絡我",
-      "url": "https://github.com/leedan77"
+      type: "postback",
+      title: "列出項目",
+      payload: "SHOW_CARD"
+    }, {
+      type: "postback",
+      title: "列出所有類別",
+      payload: "SHOW_ALL_TYPE"
     }]
   }, {
     header: {
