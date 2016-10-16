@@ -7,6 +7,7 @@ exports.sendTextMessage = sendTextMessage;
 exports.sendButtonMessage = sendButtonMessage;
 exports.sendGenericMessage = sendGenericMessage;
 exports.sendReceipt = sendReceipt;
+exports.sendRapidReply = sendRapidReply;
 
 var _isomorphicFetch = require('isomorphic-fetch');
 
@@ -125,6 +126,28 @@ function sendReceipt(sender, items) {
           }
         }
       }
+    }
+  };
+  return _api2.default.post('messages', messageData);
+}
+
+function sendRapidReply(sender, reply) {
+  var quick_replies = reply.map(function (r) {
+    if (r) {
+      return {
+        content_type: 'text',
+        title: r,
+        payload: 'QUICK_REPLY'
+      };
+    }
+  });
+  var messageData = {
+    recipient: {
+      id: "USER_ID"
+    },
+    message: {
+      text: "選取符合的名字",
+      quick_replies: quick_replies
     }
   };
   return _api2.default.post('messages', messageData);

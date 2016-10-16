@@ -4,6 +4,7 @@ import {
   sendGenericMessage,
   sendButtonMessage,
   sendReceipt,
+  sendRapidReply,
 } from '../controllers/message';
 import {
   createNewItem,
@@ -69,6 +70,7 @@ router.post('/', async (req, res, next) => {
           for (let attachment of attachments) {
             const result = await uploadPhoto(attachment.payload.url);
             console.log(result);
+            sendRapidReply(result);
           }
         }
       }

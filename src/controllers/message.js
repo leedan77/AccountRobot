@@ -109,4 +109,26 @@ export function sendReceipt(sender, items) {
   return api.post('messages', messageData);
 }
 
+export function sendRapidReply(sender, reply) {
+  let quick_replies = reply.map(r => {
+    if (r) {
+      return {
+        content_type: 'text',
+        title: r,
+        payload: 'QUICK_REPLY',
+      };
+    }
+  });
+  let messageData = {
+      recipient: {
+      id: "USER_ID"
+    },
+    message: {
+      text: "選取符合的名字",
+      quick_replies,
+    }
+  };
+  return api.post('messages', messageData);
+}
+
 
