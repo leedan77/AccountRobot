@@ -143,7 +143,7 @@ function sendRapidReply(sender, reply) {
   });
   var messageData = {
     recipient: {
-      id: "USER_ID"
+      id: sender
     },
     message: {
       text: "選取符合的名字",

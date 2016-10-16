@@ -121,7 +121,7 @@ export function sendRapidReply(sender, reply) {
   });
   let messageData = {
       recipient: {
-      id: "USER_ID"
+      id: sender,
     },
     message: {
       text: "選取符合的名字",
