@@ -141,6 +141,7 @@ function sendRapidReply(sender, reply) {
       };
     }
   });
+  console.log(quick_replies);
   var messageData = {
     recipient: {
       id: sender

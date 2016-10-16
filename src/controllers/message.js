@@ -119,8 +119,9 @@ export function sendRapidReply(sender, reply) {
       };
     }
   });
+  console.log(quick_replies);
   let messageData = {
-      recipient: {
+    recipient: {
       id: sender,
     },
     message: {
