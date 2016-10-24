@@ -168,7 +168,7 @@ router.post('/', function () {
             }
             // attachment
 
-            if (!(event.message && event.message.attachments)) {
+            if (!(event.message && event.message.attachments && !event.message.is_echo)) {
               _context.next = 91;
               break;
             }

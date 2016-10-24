@@ -61,7 +61,7 @@ router.post('/', async (req, res, next) => {
           }
         }
         // attachment
-        if (event.message && event.message.attachments) {
+        if (event.message && event.message.attachments && !event.message.is_echo) {
           if (newItemFlag === 'name') {
             let attachments = event.message.attachments;
             for (let attachment of attachments) {
