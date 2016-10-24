@@ -1,4 +1,4 @@
-import { sendTextMessage } from '../message';
+import { sendTextMessage, sendLinkMessage } from '../message';
 import { createNewItem } from '../item';
 
 export default function* newItemFlow(sender) { 
