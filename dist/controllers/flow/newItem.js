@@ -39,6 +39,7 @@ function newItemFlow(sender) {
 
           (0, _item.createNewItem)(sender, name, type, Number(price)).then(function (res) {
             (0, _message.sendTextMessage)(sender, '已儲存\n新的項目: ' + name + '\n價錢: ' + price + '\n種類: ' + type);
+            sendLinkMessage(sender, name);
           }).catch(function (err) {
             console.error(err);
           });

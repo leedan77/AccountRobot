@@ -5,6 +5,7 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.sendTextMessage = sendTextMessage;
 exports.sendButtonMessage = sendButtonMessage;
+exports.sendLinkMessage = sendLinkMessage;
 exports.sendGenericMessage = sendGenericMessage;
 exports.sendReceipt = sendReceipt;
 exports.sendRapidReply = sendRapidReply;
@@ -61,6 +62,33 @@ function sendButtonMessage(sender, text, buttons) {
           template_type: "button",
           text: text,
           buttons: buttons
+        }
+      }
+    }
+  };
+  return _api2.default.post('messages', messageData);
+}
+
+function sendLinkMessage(sender, name) {
+  var messageData = {
+    recipient: {
+      id: sender
+    },
+    message: {
+      attachment: {
+        type: "template",
+        payload: {
+          template_type: "generic",
+          elements: [{
+            title: "推薦商品",
+            subtitle: name,
+            item_url: 'http://ecshweb.pchome.com.tw/search/v3.3/?q=' + name,
+            buttons: [{
+              type: "web_url",
+              url: 'http://ecshweb.pchome.com.tw/search/v3.3/?q=' + name,
+              title: "前往查看"
+            }]
+          }]
         }
       }
     }

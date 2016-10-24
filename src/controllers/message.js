@@ -46,6 +46,36 @@ export function sendButtonMessage(sender, text, buttons) {
   return api.post('messages', messageData);
 }
 
+export function sendLinkMessage(sender, name) {
+  let messageData = {
+    recipient: {
+      id: sender,
+    },
+    message: {
+      attachment: {
+        type: "template",
+        payload: {
+          template_type: "generic",
+          elements: [
+          {
+            title: "推薦商品",
+            subtitle: name,
+            item_url: `http://ecshweb.pchome.com.tw/search/v3.3/?q=${name}`,
+            buttons: [
+              {
+                type: "web_url",
+                url: `http://ecshweb.pchome.com.tw/search/v3.3/?q=${name}`,
+                title: "前往查看",
+              }
+            ]
+          }]
+        }
+      }
+    }
+  }
+  return api.post('messages', messageData);
+}
+
 export function sendGenericMessage(sender, items) {
   let elements = items.map(item => {
     return {

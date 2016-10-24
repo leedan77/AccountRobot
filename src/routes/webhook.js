@@ -5,6 +5,7 @@ import {
   sendButtonMessage,
   sendReceipt,
   sendRapidReply,
+  sendLinkMessage,
 } from '../controllers/message';
 import {
   createNewItem,
