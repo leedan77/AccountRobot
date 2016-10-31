@@ -3,9 +3,9 @@ import Item from '../models/item';
 export function parseQuery(query) {
   let q;
   if (query.startsWith('name:')) {
-    let owner = query.replace('name:', '');
+    let name = query.replace('name:', '');
     q = {
-      owner,
+      name,
     };
   } else if (query.startsWith('type:')) {
     let type = query.replace('type:', '');

@@ -120,9 +120,9 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
 function parseQuery(query) {
   var q = void 0;
   if (query.startsWith('name:')) {
-    var owner = query.replace('name:', '');
+    var name = query.replace('name:', '');
     q = {
-      owner: owner
+      name: name
     };
   } else if (query.startsWith('type:')) {
     var type = query.replace('type:', '');

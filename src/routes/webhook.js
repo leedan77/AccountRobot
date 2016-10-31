@@ -1,6 +1,5 @@
 import { Router } from 'express';
 import {
-  parseQuery,
   sendTextMessage,
   sendGenericMessage,
   sendButtonMessage,
@@ -9,6 +8,7 @@ import {
   sendLinkMessage,
 } from '../controllers/message';
 import {
+  parseQuery,
   createNewItem,
   getAllItems,
   getSameTypeItems,
