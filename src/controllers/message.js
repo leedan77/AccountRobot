@@ -81,7 +81,7 @@ export function sendGenericMessage(sender, items) {
     return {
       title: item.name,
       subtitle: `$${item.price} (${item.createdAt.toLocaleDateString()})`,
-      image_url: items.image,
+      image_url: item.image,
       buttons: [{
         type: "postback",
         title: "查看同種類的項目",
