@@ -38,14 +38,9 @@ var updateItem = exports.updateItem = function () {
       while (1) {
         switch (_context2.prev = _context2.next) {
           case 0:
-            item.update({ owner: owner, name: name, type: type, price: price });
-            _context2.next = 3;
-            return item.save();
+            return _context2.abrupt('return', _item2.default.update({ _id: item._id }, { owner: owner, name: name, type: type, price: price }));
 
-          case 3:
-            return _context2.abrupt('return', item);
-
-          case 4:
+          case 1:
           case 'end':
             return _context2.stop();
         }
