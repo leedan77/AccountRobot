@@ -40,6 +40,7 @@ router.post('/', async (req, res, next) => {
           let payload = event.postback.payload;
           if (payload === 'NEW_ITEM') {
             item = new Item();
+            await item.save();
             sendTextMessage(sender, "請輸入商品名稱");
             itemFlow = newItemFlow(sender, item);
             newItemFlag = itemFlow.next().value;
