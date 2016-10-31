@@ -80,7 +80,7 @@ export function sendGenericMessage(sender, items) {
   let elements = items.map(item => {
     return {
       title: item.name,
-      subtitle: `$${item.price}`,
+      subtitle: `$${item.price} (${item.createdAt.toLocaleDateString()})`,
       buttons: [{
         type: "postback",
         title: "查看同種類的項目",
@@ -139,7 +139,7 @@ export function sendReceipt(sender, items) {
   return api.post('messages', messageData);
 }
 
-export function sendRapidReply(sender, reply) {
+export function sendRapidReply(sender, title, reply) {
   let quick_replies = reply.reduce((acc, r) => {
     if (r) {
       if (r.length > 20)
@@ -152,24 +152,14 @@ export function sendRapidReply(sender, reply) {
     }
     return acc;
   }, []);
-  /*let quick_replies = reply.filter(()).map(r => {
-    if (r) {
-      if (r.length > 20)
-        r = r.substr(0, 20);
-      return {
-        content_type: 'text',
-        title: r,
-        payload: 'QUICK_REPLY',
-      };
-    }
-  });*/
+
   console.log(quick_replies);
   let messageData = {
     recipient: {
       id: sender,
     },
     message: {
-      text: "選取符合的名字",
+      text: title,
       quick_replies,
     }
   };

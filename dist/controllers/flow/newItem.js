@@ -30,7 +30,11 @@ function newItemFlow(sender) {
         case 6:
           price = _context.sent;
 
-          (0, _message.sendTextMessage)(sender, '請輸入類型');
+          (0, _message.sendRapidReply)(sender, '請選取類型或自行輸入', ['食', '衣', '住', '行', '樂']).then(function (res) {
+            console.log(res);
+          }).catch(function (err) {
+            console.error(err);
+          });
           _context.next = 10;
           return "type";
 
@@ -39,7 +43,7 @@ function newItemFlow(sender) {
 
           (0, _item.createNewItem)(sender, name, type, Number(price)).then(function (res) {
             (0, _message.sendTextMessage)(sender, '已儲存\n新的項目: ' + name + '\n價錢: ' + price + '\n種類: ' + type);
-            (0, _message.sendLinkMessage)(sender, name).then(function (res) {
+            sendLinkMessage(sender, name).then(function (res) {
               console.log(res);
             }).catch(function (err) {
               console.error(err);

@@ -100,7 +100,7 @@ function sendGenericMessage(sender, items) {
   var elements = items.map(function (item) {
     return {
       title: item.name,
-      subtitle: '$' + item.price,
+      subtitle: '$' + item.price + ' (' + item.createdAt.toLocaleDateString() + ')',
       buttons: [{
         type: "postback",
         title: "查看同種類的項目",
@@ -159,7 +159,7 @@ function sendReceipt(sender, items) {
   return _api2.default.post('messages', messageData);
 }
 
-function sendRapidReply(sender, reply) {
+function sendRapidReply(sender, title, reply) {
   var quick_replies = reply.reduce(function (acc, r) {
     if (r) {
       if (r.length > 20) r = r.substr(0, 20);
@@ -171,24 +171,14 @@ function sendRapidReply(sender, reply) {
     }
     return acc;
   }, []);
-  /*let quick_replies = reply.filter(()).map(r => {
-    if (r) {
-      if (r.length > 20)
-        r = r.substr(0, 20);
-      return {
-        content_type: 'text',
-        title: r,
-        payload: 'QUICK_REPLY',
-      };
-    }
-  });*/
+
   console.log(quick_replies);
   var messageData = {
     recipient: {
       id: sender
     },
     message: {
-      text: "選取符合的名字",
+      text: title,
       quick_replies: quick_replies
     }
   };

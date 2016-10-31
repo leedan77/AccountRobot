@@ -236,7 +236,7 @@ router.post('/', function () {
             _ref2 = _context.sent;
             result = _ref2.result;
             _context.next = 89;
-            return (0, _message.sendRapidReply)(sender, result);
+            return (0, _message.sendRapidReply)(sender, "選取符合的名字", result);
 
           case 89:
             _res4 = _context.sent;

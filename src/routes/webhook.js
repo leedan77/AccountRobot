@@ -80,7 +80,7 @@ router.post('/', async (req, res, next) => {
             let attachments = event.message.attachments;
             for (let attachment of attachments) {
               const { result } = await uploadPhoto(attachment.payload.url);
-              const res = await sendRapidReply(sender, result);
+              const res = await sendRapidReply(sender, "選取符合的名字", result);
             }
           }
         }
