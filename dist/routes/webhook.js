@@ -177,7 +177,9 @@ router.post('/', function () {
 
           case 62:
             query = text.split(' ').reduce(function (acc, q) {
-              return Object.assign(acc, (0, _item.parseQuery)(q));
+              var parsedQuery = (0, _item.parseQuery)(q);
+              console.log(parsedQuery);
+              return Object.assign(acc, parsedQuery);
             }, {});
             _context.next = 65;
             return (0, _item.getFilterItems)(sender, 10, query);

@@ -62,7 +62,9 @@ router.post('/', async (req, res, next) => {
             const newItemFlag = itemFlow.next(text).value;
           } else {
             let query = text.split(' ').reduce((acc, q) => {
-              return Object.assign(acc, parseQuery(q));
+              let parsedQuery = parseQuery(q);
+              console.log(parsedQuery);
+              return Object.assign(acc, parsedQuery);
             }, {});
             const items = await getFilterItems(sender, 10, query);
             console.log(items);
