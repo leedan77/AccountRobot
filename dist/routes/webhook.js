@@ -49,7 +49,7 @@ router.post('/', function () {
 
           case 6:
             if (_iteratorNormalCompletion = (_step = _iterator.next()).done) {
-              _context.next = 125;
+              _context.next = 127;
               break;
             }
 
@@ -62,7 +62,7 @@ router.post('/', function () {
 
           case 13:
             if (_iteratorNormalCompletion2 = (_step2 = _iterator2.next()).done) {
-              _context.next = 108;
+              _context.next = 110;
               break;
             }
 
@@ -156,11 +156,11 @@ router.post('/', function () {
             _res2 = _context.sent;
 
           case 55:
-            return _context.abrupt('continue', 105);
+            return _context.abrupt('continue', 107);
 
           case 56:
             if (!(event.message && event.message.text && !event.message.is_echo)) {
-              _context.next = 71;
+              _context.next = 73;
               break;
             }
 
@@ -172,7 +172,7 @@ router.post('/', function () {
             }
 
             _newItemFlag = itemFlow.next(text).value;
-            _context.next = 71;
+            _context.next = 73;
             break;
 
           case 62:
@@ -187,22 +187,31 @@ router.post('/', function () {
 
           case 66:
             _items3 = _context.sent;
-            _context.next = 69;
-            return (0, _message.sendGenericMessage)(sender, _items3);
+
+            if (!(_items3 == null)) {
+              _context.next = 69;
+              break;
+            }
+
+            return _context.abrupt('continue', 107);
 
           case 69:
+            _context.next = 71;
+            return (0, _message.sendGenericMessage)(sender, _items3);
+
+          case 71:
             _res3 = _context.sent;
 
             console.log(_items3);
 
-          case 71:
+          case 73:
             if (!(event.message && event.message.attachments && !event.message.is_echo)) {
-              _context.next = 105;
+              _context.next = 107;
               break;
             }
 
             if (!(newItemFlag === 'name')) {
-              _context.next = 105;
+              _context.next = 107;
               break;
             }
 
@@ -210,162 +219,162 @@ router.post('/', function () {
             _iteratorNormalCompletion3 = true;
             _didIteratorError3 = false;
             _iteratorError3 = undefined;
-            _context.prev = 77;
+            _context.prev = 79;
             _iterator3 = attachments[Symbol.iterator]();
 
-          case 79:
+          case 81:
             if (_iteratorNormalCompletion3 = (_step3 = _iterator3.next()).done) {
-              _context.next = 91;
+              _context.next = 93;
               break;
             }
 
             attachment = _step3.value;
-            _context.next = 83;
+            _context.next = 85;
             return (0, _upload.uploadPhoto)(attachment.payload.url);
 
-          case 83:
+          case 85:
             _ref2 = _context.sent;
             result = _ref2.result;
-            _context.next = 87;
+            _context.next = 89;
             return (0, _message.sendRapidReply)(sender, result);
 
-          case 87:
+          case 89:
             _res4 = _context.sent;
 
-          case 88:
+          case 90:
             _iteratorNormalCompletion3 = true;
-            _context.next = 79;
-            break;
-
-          case 91:
-            _context.next = 97;
+            _context.next = 81;
             break;
 
           case 93:
-            _context.prev = 93;
-            _context.t0 = _context['catch'](77);
+            _context.next = 99;
+            break;
+
+          case 95:
+            _context.prev = 95;
+            _context.t0 = _context['catch'](79);
             _didIteratorError3 = true;
             _iteratorError3 = _context.t0;
 
-          case 97:
-            _context.prev = 97;
-            _context.prev = 98;
+          case 99:
+            _context.prev = 99;
+            _context.prev = 100;
 
             if (!_iteratorNormalCompletion3 && _iterator3.return) {
               _iterator3.return();
             }
 
-          case 100:
-            _context.prev = 100;
+          case 102:
+            _context.prev = 102;
 
             if (!_didIteratorError3) {
-              _context.next = 103;
+              _context.next = 105;
               break;
             }
 
             throw _iteratorError3;
 
-          case 103:
-            return _context.finish(100);
-
-          case 104:
-            return _context.finish(97);
-
           case 105:
+            return _context.finish(102);
+
+          case 106:
+            return _context.finish(99);
+
+          case 107:
             _iteratorNormalCompletion2 = true;
             _context.next = 13;
             break;
 
-          case 108:
-            _context.next = 114;
+          case 110:
+            _context.next = 116;
             break;
 
-          case 110:
-            _context.prev = 110;
+          case 112:
+            _context.prev = 112;
             _context.t1 = _context['catch'](11);
             _didIteratorError2 = true;
             _iteratorError2 = _context.t1;
 
-          case 114:
-            _context.prev = 114;
-            _context.prev = 115;
+          case 116:
+            _context.prev = 116;
+            _context.prev = 117;
 
             if (!_iteratorNormalCompletion2 && _iterator2.return) {
               _iterator2.return();
             }
 
-          case 117:
-            _context.prev = 117;
+          case 119:
+            _context.prev = 119;
 
             if (!_didIteratorError2) {
-              _context.next = 120;
+              _context.next = 122;
               break;
             }
 
             throw _iteratorError2;
 
-          case 120:
-            return _context.finish(117);
-
-          case 121:
-            return _context.finish(114);
-
           case 122:
+            return _context.finish(119);
+
+          case 123:
+            return _context.finish(116);
+
+          case 124:
             _iteratorNormalCompletion = true;
             _context.next = 6;
             break;
 
-          case 125:
-            _context.next = 131;
+          case 127:
+            _context.next = 133;
             break;
 
-          case 127:
-            _context.prev = 127;
+          case 129:
+            _context.prev = 129;
             _context.t2 = _context['catch'](4);
             _didIteratorError = true;
             _iteratorError = _context.t2;
 
-          case 131:
-            _context.prev = 131;
-            _context.prev = 132;
+          case 133:
+            _context.prev = 133;
+            _context.prev = 134;
 
             if (!_iteratorNormalCompletion && _iterator.return) {
               _iterator.return();
             }
 
-          case 134:
-            _context.prev = 134;
+          case 136:
+            _context.prev = 136;
 
             if (!_didIteratorError) {
-              _context.next = 137;
+              _context.next = 139;
               break;
             }
 
             throw _iteratorError;
 
-          case 137:
-            return _context.finish(134);
-
-          case 138:
-            return _context.finish(131);
-
           case 139:
+            return _context.finish(136);
+
+          case 140:
+            return _context.finish(133);
+
+          case 141:
             res.sendStatus(200);
-            _context.next = 145;
+            _context.next = 147;
             break;
 
-          case 142:
-            _context.prev = 142;
+          case 144:
+            _context.prev = 144;
             _context.t3 = _context['catch'](0);
 
             next(_context.t3);
 
-          case 145:
+          case 147:
           case 'end':
             return _context.stop();
         }
       }
-    }, _callee, undefined, [[0, 142], [4, 127, 131, 139], [11, 110, 114, 122], [77, 93, 97, 105], [98,, 100, 104], [115,, 117, 121], [132,, 134, 138]]);
+    }, _callee, undefined, [[0, 144], [4, 129, 133, 141], [11, 112, 116, 124], [79, 95, 99, 107], [100,, 102, 106], [117,, 119, 123], [134,, 136, 140]]);
   }));
 
   return function (_x, _x2, _x3) {

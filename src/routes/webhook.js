@@ -67,6 +67,9 @@ router.post('/', async (req, res, next) => {
             }, {});
             console.log(query);
             const items = await getFilterItems(sender, 10, query);
+            if (items == null) {
+              continue;
+            }
             const res = await sendGenericMessage(sender, items);
             console.log(items);
           }
