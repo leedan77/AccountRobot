@@ -3,7 +3,7 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.getSameTypeItems = exports.getAllItems = exports.createNewItem = undefined;
+exports.getFilterItems = exports.getSameTypeItems = exports.getAllItems = exports.createNewItem = undefined;
 
 var createNewItem = exports.createNewItem = function () {
   var _ref = _asyncToGenerator(regeneratorRuntime.mark(function _callee(owner, name, type, price) {
@@ -80,6 +80,35 @@ var getSameTypeItems = exports.getSameTypeItems = function () {
   };
 }();
 
+var getFilterItems = exports.getFilterItems = function () {
+  var _ref4 = _asyncToGenerator(regeneratorRuntime.mark(function _callee4(userID, limit, query) {
+    var items;
+    return regeneratorRuntime.wrap(function _callee4$(_context4) {
+      while (1) {
+        switch (_context4.prev = _context4.next) {
+          case 0:
+            _context4.next = 2;
+            return _item2.default.find(query).limit(limit);
+
+          case 2:
+            items = _context4.sent;
+            return _context4.abrupt('return', items);
+
+          case 4:
+          case 'end':
+            return _context4.stop();
+        }
+      }
+    }, _callee4, this);
+  }));
+
+  return function getFilterItems(_x8, _x9, _x10) {
+    return _ref4.apply(this, arguments);
+  };
+}();
+
+exports.parseQuery = parseQuery;
+
 var _item = require('../models/item');
 
 var _item2 = _interopRequireDefault(_item);
@@ -87,3 +116,27 @@ var _item2 = _interopRequireDefault(_item);
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, arguments); return new Promise(function (resolve, reject) { function step(key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { return Promise.resolve(value).then(function (value) { return step("next", value); }, function (err) { return step("throw", err); }); } } return step("next"); }); }; }
+
+function parseQuery(query) {
+  var q = void 0;
+  if (query.startsWith('name:')) {
+    var owner = query.replace('name:', '');
+    q = {
+      owner: owner
+    };
+  } else if (query.startsWith('type:')) {
+    var type = query.replace('type:', '');
+    q = {
+      type: type
+    };
+  } else if (query.startsWith('time:')) {
+    var time = query.replace('time:', '').split('~');
+    q = {
+      createAt: {
+        $gte: time[0],
+        $lt: time[1]
+      }
+    };
+  }
+  return q;
+}

@@ -9,7 +9,7 @@ export default function* newItemFlow(sender) {
   const type = yield "type";
   createNewItem(sender, name, type, Number(price)).then(res => {
     sendTextMessage(sender, `已儲存\n新的項目: ${name}\n價錢: ${price}\n種類: ${type}`);
-    sendLinkMessage(sender, name).then(res => {
+    sendLinkMessage(sender, name).then(res => { 
       console.log(res);
     }).catch(err => {
       console.error(err);

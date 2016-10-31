@@ -1,5 +1,6 @@
 import { Router } from 'express';
 import {
+  parseQuery,
   sendTextMessage,
   sendGenericMessage,
   sendButtonMessage,
@@ -11,6 +12,7 @@ import {
   createNewItem,
   getAllItems,
   getSameTypeItems,
+  getFilterItems,
 } from '../controllers/item';
 import { uploadPhoto } from '../controllers/upload';
 import newItemFlow from '../controllers/flow/newItem';
@@ -58,6 +60,11 @@ router.post('/', async (req, res, next) => {
           let text = event.message.text;       
           if (newItemFlag) {
             const newItemFlag = itemFlow.next(text).value;
+          } else {
+            let query = text.split(' ').reduce((acc, q) => {
+              return Object.assign(acc, parseQuery(q));
+            }, {});
+            const items = await getFilterItems(sender, 10, query);
           }
         }
         // attachment
