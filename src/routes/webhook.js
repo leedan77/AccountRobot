@@ -63,10 +63,11 @@ router.post('/', async (req, res, next) => {
           } else {
             let query = text.split(' ').reduce((acc, q) => {
               let parsedQuery = parseQuery(q);
-              console.log(parsedQuery);
               return Object.assign(acc, parsedQuery);
             }, {});
+            console.log(query);
             const items = await getFilterItems(sender, 10, query);
+            const res = await sendGenericMessage(sender, items);
             console.log(items);
           }
         }

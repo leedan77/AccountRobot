@@ -87,14 +87,22 @@ var getFilterItems = exports.getFilterItems = function () {
       while (1) {
         switch (_context4.prev = _context4.next) {
           case 0:
-            _context4.next = 2;
-            return _item2.default.find(query).limit(limit);
+            if (!(query === undefined)) {
+              _context4.next = 2;
+              break;
+            }
+
+            return _context4.abrupt('return', null);
 
           case 2:
+            _context4.next = 4;
+            return _item2.default.find(query).limit(limit);
+
+          case 4:
             items = _context4.sent;
             return _context4.abrupt('return', items);
 
-          case 4:
+          case 6:
           case 'end':
             return _context4.stop();
         }

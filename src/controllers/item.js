@@ -40,6 +40,8 @@ export async function getSameTypeItems(type) {
 }
 
 export async function getFilterItems(userID, limit, query) {
+  if (query === undefined)
+    return null;
   const items = await Item.find(query).limit(limit);
   return items;
 }
