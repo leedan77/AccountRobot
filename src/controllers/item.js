@@ -19,7 +19,7 @@ export function parseQuery(query) {
   } else if (query.startsWith('time:')) {
     let time = query.replace('time:', '').split('~');
     q = {
-      createAt: {
+      createdAt: {
         $gte: new Date(time[0]),
         $lt: new Date(time[1]),
       },
