@@ -43,7 +43,7 @@ function newItemFlow(sender, item) {
 
           (0, _item.updateItem)(sender, item, name, type, Number(price)).then(function (res) {
             (0, _message.sendTextMessage)(sender, '已儲存\n新的項目: ' + name + '\n價錢: ' + price + '\n種類: ' + type);
-            sendLinkMessage(sender, name).then(function (res) {
+            (0, _message.sendLinkMessage)(sender, name).then(function (res) {
               console.log(res);
             }).catch(function (err) {
               console.error(err);
