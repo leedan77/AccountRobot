@@ -185,7 +185,7 @@ router.post('/', function () {
           case 65:
             _items3 = _context.sent;
 
-            print(_items3);
+            console.log(_items3);
 
           case 67:
             if (!(event.message && event.message.attachments && !event.message.is_echo)) {
