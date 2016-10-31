@@ -65,7 +65,7 @@ router.post('/', async (req, res, next) => {
               return Object.assign(acc, parseQuery(q));
             }, {});
             const items = await getFilterItems(sender, 10, query);
-            print(items);
+            console.log(items);
           }
         }
         // attachment
