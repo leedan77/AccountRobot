@@ -1,7 +1,7 @@
 import { sendTextMessage, sendLinkMessagem, sendRapidReply } from '../message';
-import { createNewItem } from '../item';
+import { createNewItem, updateItem } from '../item';
 
-export default function* newItemFlow(sender) { 
+export default function* newItemFlow(sender, item) { 
   const name = yield "name";
   sendTextMessage(sender, `請輸入價錢`);
   const price = yield "price";
@@ -11,7 +11,7 @@ export default function* newItemFlow(sender) {
     console.error(err);
   })
   const type = yield "type";
-  createNewItem(sender, name, type, Number(price)).then(res => {
+  updateItem(sender, item, name, type, Number(price)).then(res => {
     sendTextMessage(sender, `已儲存\n新的項目: ${name}\n價錢: ${price}\n種類: ${type}`);
     sendLinkMessage(sender, name).then(res => { 
       console.log(res);

@@ -16,6 +16,7 @@ import {
 } from '../controllers/item';
 import { uploadPhoto } from '../controllers/upload';
 import newItemFlow from '../controllers/flow/newItem';
+import Item from '../models/item';
 const router = new Router();
 
 router.get('/', (req, res) => {
@@ -27,6 +28,7 @@ router.get('/', (req, res) => {
 
 let newItemFlag = 0;
 let itemFlow;
+let item;
 
 router.post('/', async (req, res, next) => {
   try {
@@ -37,8 +39,9 @@ router.post('/', async (req, res, next) => {
         if (event.postback) {
           let payload = event.postback.payload;
           if (payload === 'NEW_ITEM') {
+            item = new Item();
             sendTextMessage(sender, "請輸入商品名稱");
-            itemFlow = newItemFlow(sender);
+            itemFlow = newItemFlow(sender, item);
             newItemFlag = itemFlow.next().value;
           } else if (payload === 'CANCEL_ITEM') {
             sendTextMessage(sender, "已取消新增項目");
@@ -80,6 +83,8 @@ router.post('/', async (req, res, next) => {
             let attachments = event.message.attachments;
             for (let attachment of attachments) {
               const { result } = await uploadPhoto(attachment.payload.url);
+              item.image = attachment.payload.url;
+              item.save();
               const res = await sendRapidReply(sender, "選取符合的名字", result);
             }
           }

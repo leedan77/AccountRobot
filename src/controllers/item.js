@@ -34,6 +34,12 @@ export async function createNewItem(owner, name, type, price) {
   return item;
 }
 
+export async function updateItem(owner, item, name, type, price) {
+  item.update({ owner, name, type, price });
+  await item.save();
+  return item;
+}
+
 export async function getAllItems(userID, limit) {
   return Item.find({ owner: userID }).limit(limit);
 }

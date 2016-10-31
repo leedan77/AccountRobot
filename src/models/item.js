@@ -5,7 +5,7 @@ const itemSchema = new Schema({
   name: String,
   type: String,
   price: Number,
-  image: Schema.Types.Mixed,
+  image: String,
 }, {
   timestamps: true
 });
