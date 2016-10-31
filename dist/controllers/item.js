@@ -87,7 +87,7 @@ var getFilterItems = exports.getFilterItems = function () {
       while (1) {
         switch (_context4.prev = _context4.next) {
           case 0:
-            if (!(query === undefined)) {
+            if (!isEmpty(query)) {
               _context4.next = 2;
               break;
             }
@@ -125,6 +125,10 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, arguments); return new Promise(function (resolve, reject) { function step(key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { return Promise.resolve(value).then(function (value) { return step("next", value); }, function (err) { return step("throw", err); }); } } return step("next"); }); }; }
 
+function isEmpty(obj) {
+  return Object.keys(obj).length === 0;
+}
+
 function parseQuery(query) {
   var q = void 0;
   if (query.startsWith('name:')) {
@@ -141,8 +145,8 @@ function parseQuery(query) {
     var time = query.replace('time:', '').split('~');
     q = {
       createAt: {
-        $gte: time[0],
-        $lt: time[1]
+        $gte: new Date(time[0]),
+        $lt: new Date(time[1])
       }
     };
   }

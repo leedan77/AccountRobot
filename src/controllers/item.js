@@ -1,5 +1,9 @@
 import Item from '../models/item';
 
+function isEmpty(obj) {
+  return Object.keys(obj).length === 0;
+}
+
 export function parseQuery(query) {
   let q;
   if (query.startsWith('name:')) {
@@ -16,8 +20,8 @@ export function parseQuery(query) {
     let time = query.replace('time:', '').split('~');
     q = {
       createAt: {
-        $gte: time[0],
-        $lt: time[1],
+        $gte: new Date(time[0]),
+        $lt: new Date(time[1]),
       },
     };
   }
@@ -40,7 +44,7 @@ export async function getSameTypeItems(type) {
 }
 
 export async function getFilterItems(userID, limit, query) {
-  if (query === undefined)
+  if (isEmpty(query))
     return null;
   const items = await Item.find(query).limit(limit);
   return items;
