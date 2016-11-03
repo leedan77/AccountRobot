@@ -63,7 +63,7 @@ router.post('/', async (req, res, next) => {
         if (event.message && event.message.text && !event.message.is_echo) {
           let text = event.message.text;       
           if (newItemFlag) {
-            const newItemFlag = itemFlow.next(text).value;
+            newItemFlag = itemFlow.next(text).value;
           } else {
             let query = text.split(' ').reduce((acc, q) => {
               let parsedQuery = parseQuery(q);
@@ -87,6 +87,12 @@ router.post('/', async (req, res, next) => {
               item.image = attachment.payload.url;
               item.save();
               const res = await sendRapidReply(sender, "選取符合的名字", result);
+            }
+          } else if (newItemFlag === 'location') {
+            let attachments = event.message.attachments;
+            for (let attachment of attachments) {
+              const loc = attachment.payload.coordinates;
+              newItemFlag = itemFlow.next(loc).value; 
             }
           }
         }

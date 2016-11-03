@@ -167,4 +167,17 @@ export function sendRapidReply(sender, title, reply) {
   return api.post('messages', messageData);
 }
 
-
+export function sendRequestLocation(sender, title) {
+  let messageData = {
+    recipient: {
+      id: sender,
+    },
+    message: {
+      text: title,
+      quick_replies: [{
+        content_type: 'location',
+      }]
+    }
+  };
+  return api.post('messages', messageData);
+}

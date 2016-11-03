@@ -1,4 +1,9 @@
-import { sendTextMessage, sendLinkMessage, sendRapidReply } from '../message';
+import {
+  sendTextMessage,
+  sendLinkMessage,
+  sendRapidReply,
+  sendRequestLocation,
+} from '../message';
 import { createNewItem, updateItem } from '../item';
 
 export default function* newItemFlow(sender, item) { 
@@ -11,6 +16,8 @@ export default function* newItemFlow(sender, item) {
     console.error(err);
   })
   const type = yield "type";
+  sendRequestLocation(sender, '分享您的位置');
+  const location = yield "location";
   updateItem(sender, item, name, type, Number(price)).then(res => {
     sendTextMessage(sender, `已儲存\n新的項目: ${name}\n價錢: ${price}\n種類: ${type}`);
     sendLinkMessage(sender, name).then(res => { 
