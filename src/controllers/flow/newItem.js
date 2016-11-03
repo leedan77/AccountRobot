@@ -16,14 +16,10 @@ export default function* newItemFlow(sender, item) {
     console.error(err);
   })
   const type = yield "type";
-  sendRequestLocation(sender, '分享您的位置').then(res => {
-    console.log(res);
-  }).catch(err => {
-    console.error(err);
-  })
+  sendRequestLocation(sender, '分享您的位置');
   const location = yield "location";
-  console.log("location: " + location);
-  updateItem(sender, item, name, type, Number(price)).then(res => {
+  console.log("location: " + JSON.stringify(location));
+  updateItem(sender, item, name, type, Number(price), location).then(res => {
     sendTextMessage(sender, `已儲存\n新的項目: ${name}\n價錢: ${price}\n種類: ${type}`);
     sendLinkMessage(sender, name).then(res => { 
       console.log(res);

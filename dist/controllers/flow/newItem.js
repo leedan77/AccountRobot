@@ -41,19 +41,15 @@ function newItemFlow(sender, item) {
         case 10:
           type = _context.sent;
 
-          (0, _message.sendRequestLocation)(sender, '分享您的位置').then(function (res) {
-            console.log(res);
-          }).catch(function (err) {
-            console.error(err);
-          });
+          (0, _message.sendRequestLocation)(sender, '分享您的位置');
           _context.next = 14;
           return "location";
 
         case 14:
           location = _context.sent;
 
-          console.log("location: " + location);
-          (0, _item.updateItem)(sender, item, name, type, Number(price)).then(function (res) {
+          console.log("location: " + JSON.stringify(location));
+          (0, _item.updateItem)(sender, item, name, type, Number(price), location).then(function (res) {
             (0, _message.sendTextMessage)(sender, '已儲存\n新的項目: ' + name + '\n價錢: ' + price + '\n種類: ' + type);
             (0, _message.sendLinkMessage)(sender, name).then(function (res) {
               console.log(res);

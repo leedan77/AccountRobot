@@ -6,6 +6,7 @@ const itemSchema = new Schema({
   type: String,
   price: Number,
   image: String,
+  loc: Schema.Types.Mixed,
 }, {
   timestamps: true
 });

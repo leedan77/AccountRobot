@@ -34,8 +34,8 @@ export async function createNewItem(owner, name, type, price) {
   return item;
 }
 
-export async function updateItem(owner, item, name, type, price) {
-  return Item.update({ _id: item._id }, { owner, name, type, price });
+export async function updateItem(owner, item, name, type, price, loc) {
+  return Item.update({ _id: item._id }, { owner, name, type, price, loc });
 }
 
 export async function getAllItems(userID, limit) {
