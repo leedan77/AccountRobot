@@ -9,6 +9,7 @@ exports.sendLinkMessage = sendLinkMessage;
 exports.sendGenericMessage = sendGenericMessage;
 exports.sendReceipt = sendReceipt;
 exports.sendRapidReply = sendRapidReply;
+exports.sendRequestLocation = sendRequestLocation;
 
 var _isomorphicFetch = require('isomorphic-fetch');
 
@@ -181,6 +182,21 @@ function sendRapidReply(sender, title, reply) {
     message: {
       text: title,
       quick_replies: quick_replies
+    }
+  };
+  return _api2.default.post('messages', messageData);
+}
+
+function sendRequestLocation(sender, title) {
+  var messageData = {
+    recipient: {
+      id: sender
+    },
+    message: {
+      text: title,
+      quick_replies: [{
+        content_type: 'location'
+      }]
     }
   };
   return _api2.default.post('messages', messageData);
