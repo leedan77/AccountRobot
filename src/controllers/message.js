@@ -187,6 +187,7 @@ function parseLocation(items) {
   return items.reduce((acc, item) => {
     if (item.loc && item.loc.lat && item.loc.long)
       return acc.concat(`markers=${item.loc.lat},${item.loc.long}&`)
+    return acc;
   }, "");
 }
 

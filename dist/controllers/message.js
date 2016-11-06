@@ -260,5 +260,6 @@ function sendRequestLocation(sender, title) {
 function parseLocation(items) {
   return items.reduce(function (acc, item) {
     if (item.loc && item.loc.lat && item.loc.long) return acc.concat('markers=' + item.loc.lat + ',' + item.loc.long + '&');
+    return acc;
   }, "");
 }
