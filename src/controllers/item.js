@@ -50,6 +50,6 @@ export async function getSameTypeItems(type) {
 export async function getFilterItems(userID, limit, query) {
   if (isEmpty(query))
     return null;
-  const items = await Item.find(query).limit(limit);
+  const items = await Item.find({ owner: userID, ...query }).limit(limit);
   return items;
 }

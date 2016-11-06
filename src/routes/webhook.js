@@ -57,6 +57,8 @@ router.post('/', async (req, res, next) => {
             const type = payload.replace('TYPE_', '');
             const items = await getSameTypeItems(type);
             const res = await sendGenericMessage(sender, items);
+          } else if (payload === 'SHOW_ITEM_MAP') {
+            
           }
           continue;
         }

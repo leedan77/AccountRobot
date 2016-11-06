@@ -3,6 +3,57 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
+exports.sendLocationMap = undefined;
+
+var sendLocationMap = exports.sendLocationMap = function () {
+  var _ref = _asyncToGenerator(regeneratorRuntime.mark(function _callee(sender, loc) {
+    var items, locString, messageData;
+    return regeneratorRuntime.wrap(function _callee$(_context) {
+      while (1) {
+        switch (_context.prev = _context.next) {
+          case 0:
+            _context.next = 2;
+            return (0, _item.getAllItems)(sender);
+
+          case 2:
+            items = _context.sent;
+
+            console.log(items);
+            locString = parseLocation(items);
+            messageData = {
+              recipient: {
+                id: sender
+              },
+              message: {
+                attachment: {
+                  type: "template",
+                  payload: {
+                    template_type: "generic",
+                    elements: {
+                      element: {
+                        title: '您的商品地圖',
+                        image_url: 'https://maps.googleapis.com/maps/api/staticmap?size=764x400&center=' + items[0].loc.lat + ',' + items[0].loc.long + '&zoom=25&' + locString
+                      }
+                    }
+                  }
+                }
+              }
+            };
+            return _context.abrupt('return', _api2.default.post('messages', messageData));
+
+          case 7:
+          case 'end':
+            return _context.stop();
+        }
+      }
+    }, _callee, this);
+  }));
+
+  return function sendLocationMap(_x, _x2) {
+    return _ref.apply(this, arguments);
+  };
+}();
+
 exports.sendTextMessage = sendTextMessage;
 exports.sendButtonMessage = sendButtonMessage;
 exports.sendLinkMessage = sendLinkMessage;
@@ -25,7 +76,11 @@ var _api = require('../core/api');
 
 var _api2 = _interopRequireDefault(_api);
 
+var _item = require('./item');
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, arguments); return new Promise(function (resolve, reject) { function step(key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { return Promise.resolve(value).then(function (value) { return step("next", value); }, function (err) { return step("throw", err); }); } } return step("next"); }); }; }
 
 var BASE_URL = 'https://graph.facebook.com/v2.6/me/messages';
 
@@ -200,4 +255,10 @@ function sendRequestLocation(sender, title) {
     }
   };
   return _api2.default.post('messages', messageData);
+}
+
+function parseLocation(items) {
+  return items.reduce(function (acc, item) {
+    acc.concat('markers=' + item.loc.lat + ',' + item.loc.long + '&');
+  }, "");
 }

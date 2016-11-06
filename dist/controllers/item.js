@@ -5,6 +5,8 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.getFilterItems = exports.getSameTypeItems = exports.getAllItems = exports.updateItem = exports.createNewItem = undefined;
 
+var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+
 var createNewItem = exports.createNewItem = function () {
   var _ref = _asyncToGenerator(regeneratorRuntime.mark(function _callee(owner, name, type, price) {
     var item;
@@ -117,7 +119,7 @@ var getFilterItems = exports.getFilterItems = function () {
 
           case 2:
             _context5.next = 4;
-            return _item2.default.find(query).limit(limit);
+            return _item2.default.find(_extends({ owner: userID }, query)).limit(limit);
 
           case 4:
             items = _context5.sent;

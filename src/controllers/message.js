@@ -2,6 +2,7 @@ import fetch from 'isomorphic-fetch';
 import url from 'url';
 import { token } from '../core/config';
 import api from '../core/api';
+import { getAllItems } from './item';
 
 const BASE_URL = 'https://graph.facebook.com/v2.6/me/messages';
 
@@ -181,3 +182,36 @@ export function sendRequestLocation(sender, title) {
   };
   return api.post('messages', messageData);
 }
+
+function parseLocation(items) {
+  return items.reduce((acc, item) => {
+    acc.concat(`markers=${item.loc.lat},${item.loc.long}&`)
+  }, "");
+}
+
+export async function sendLocationMap(sender, loc) {
+  const items = await getAllItems(sender);
+  console.log(items);
+  let locString = parseLocation(items);
+  let messageData = {
+    recipient: {
+      id: sender,
+    },
+    message: {
+      attachment: {
+        type: "template",
+        payload: {
+          template_type: "generic",
+          elements: {
+            element: {
+              title: '您的商品地圖',
+              image_url: `https://maps.googleapis.com/maps/api/staticmap?size=764x400&center=${items[0].loc.lat},${items[0].loc.long}&zoom=25&${locString}`
+            }
+          }
+        }
+      }
+    }
+  };
+  return api.post('messages', messageData);
+}
+
