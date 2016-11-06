@@ -189,7 +189,7 @@ function parseLocation(items) {
   }, "");
 }
 
-export async function sendLocationMap(sender, loc) {
+export async function sendLocationMap(sender) {
   const items = await getAllItems(sender);
   console.log(items);
   let locString = parseLocation(items);

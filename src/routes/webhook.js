@@ -6,6 +6,7 @@ import {
   sendReceipt,
   sendRapidReply,
   sendLinkMessage,
+  sendLocationMap,
 } from '../controllers/message';
 import {
   parseQuery,
@@ -58,7 +59,7 @@ router.post('/', async (req, res, next) => {
             const items = await getSameTypeItems(type);
             const res = await sendGenericMessage(sender, items);
           } else if (payload === 'SHOW_ITEM_MAP') {
-            
+            const res = await sendLocationMap(sender);
           }
           continue;
         }
