@@ -32,7 +32,7 @@ var sendLocationMap = exports.sendLocationMap = function () {
                     elements: {
                       element: {
                         title: '您的商品地圖',
-                        image_url: 'https://maps.googleapis.com/maps/api/staticmap?size=764x400&center=' + items[0].loc.lat + ',' + items[0].loc.long + '&zoom=25&' + locString
+                        image_url: 'https://maps.googleapis.com/maps/api/staticmap?size=764x400&zoom=25&' + locString
                       }
                     }
                   }
