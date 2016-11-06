@@ -185,7 +185,8 @@ export function sendRequestLocation(sender, title) {
 
 function parseLocation(items) {
   return items.reduce((acc, item) => {
-    acc.concat(`markers=${item.loc.lat},${item.loc.long}&`)
+    if (item.loc && item.loc.lat && item.loc.long)
+      acc.concat(`markers=${item.loc.lat},${item.loc.long}&`)
   }, "");
 }
 
