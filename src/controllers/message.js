@@ -207,7 +207,8 @@ export async function sendLocationMap(sender) {
           elements: {
             element: {
               title: '您的商品地圖',
-              image_url: `https://maps.googleapis.com/maps/api/staticmap?size=764x400&zoom=25&${locString}`
+              image_url: `https://maps.googleapis.com/maps/api/staticmap?size=764x400&${locString}`,
+              item_url: `https://maps.googleapis.com/maps/api/staticmap?size=764x400&${locString}`
             }
           }
         }
