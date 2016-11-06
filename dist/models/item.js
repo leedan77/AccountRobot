@@ -15,7 +15,8 @@ var itemSchema = new _mongoose.Schema({
   name: String,
   type: String,
   price: Number,
-  image: _mongoose.Schema.Types.Mixed
+  image: String,
+  loc: _mongoose.Schema.Types.Mixed
 }, {
   timestamps: true
 });

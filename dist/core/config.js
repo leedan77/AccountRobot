@@ -52,6 +52,10 @@ function initChatMenu() {
       type: "postback",
       title: "列出所有類別",
       payload: "SHOW_ALL_TYPE"
+    }, {
+      type: "postback",
+      title: "商品地圖",
+      payload: "SHOW_ITEM_MAP"
     }]
   }, {
     header: {

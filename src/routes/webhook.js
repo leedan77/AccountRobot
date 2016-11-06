@@ -5,14 +5,19 @@ import {
   sendButtonMessage,
   sendReceipt,
   sendRapidReply,
+  sendLinkMessage,
+  sendLocationMap,
 } from '../controllers/message';
 import {
+  parseQuery,
   createNewItem,
   getAllItems,
   getSameTypeItems,
+  getFilterItems,
 } from '../controllers/item';
 import { uploadPhoto } from '../controllers/upload';
 import newItemFlow from '../controllers/flow/newItem';
+import Item from '../models/item';
 const router = new Router();
 
 router.get('/', (req, res) => {
@@ -24,6 +29,7 @@ router.get('/', (req, res) => {
 
 let newItemFlag = 0;
 let itemFlow;
+let item;
 
 router.post('/', async (req, res, next) => {
   try {
@@ -34,8 +40,10 @@ router.post('/', async (req, res, next) => {
         if (event.postback) {
           let payload = event.postback.payload;
           if (payload === 'NEW_ITEM') {
+            item = new Item();
+            await item.save();
             sendTextMessage(sender, "請輸入商品名稱");
-            itemFlow = newItemFlow(sender);
+            itemFlow = newItemFlow(sender, item);
             newItemFlag = itemFlow.next().value;
           } else if (payload === 'CANCEL_ITEM') {
             sendTextMessage(sender, "已取消新增項目");
@@ -50,22 +58,44 @@ router.post('/', async (req, res, next) => {
             const type = payload.replace('TYPE_', '');
             const items = await getSameTypeItems(type);
             const res = await sendGenericMessage(sender, items);
+          } else if (payload === 'SHOW_ITEM_MAP') {
+            const res = await sendLocationMap(sender);
           }
           continue;
         }
         if (event.message && event.message.text && !event.message.is_echo) {
           let text = event.message.text;       
           if (newItemFlag) {
-            const newItemFlag = itemFlow.next(text).value;
+            newItemFlag = itemFlow.next(text).value;
+          } else {
+            let query = text.split(' ').reduce((acc, q) => {
+              let parsedQuery = parseQuery(q);
+              return Object.assign(acc, parsedQuery);
+            }, {});
+            console.log(query);
+            const items = await getFilterItems(sender, 10, query);
+            if (items == null) {
+              continue;
+            }
+            const res = await sendGenericMessage(sender, items);
+            console.log(items);
           }
         }
         // attachment
-        if (event.message && event.message.attachments) {
+        if (event.message && event.message.attachments && !event.message.is_echo) {
           if (newItemFlag === 'name') {
             let attachments = event.message.attachments;
             for (let attachment of attachments) {
               const { result } = await uploadPhoto(attachment.payload.url);
-              const res = await sendRapidReply(sender, result);
+              item.image = attachment.payload.url;
+              item.save();
+              const res = await sendRapidReply(sender, "選取符合的名字", result);
+            }
+          } else if (newItemFlag === 'location') {
+            let attachments = event.message.attachments;
+            for (let attachment of attachments) {
+              const loc = attachment.payload.coordinates;
+              newItemFlag = itemFlow.next(loc).value; 
             }
           }
         }

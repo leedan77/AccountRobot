@@ -2,6 +2,7 @@ import fetch from 'isomorphic-fetch';
 import url from 'url';
 import { token } from '../core/config';
 import api from '../core/api';
+import { getAllItems } from './item';
 
 const BASE_URL = 'https://graph.facebook.com/v2.6/me/messages';
 
@@ -46,11 +47,42 @@ export function sendButtonMessage(sender, text, buttons) {
   return api.post('messages', messageData);
 }
 
+export function sendLinkMessage(sender, name) {
+  let messageData = {
+    recipient: {
+      id: sender,
+    },
+    message: {
+      attachment: {
+        type: "template",
+        payload: {
+          template_type: "generic",
+          elements: [
+          {
+            title: "推薦商品",
+            subtitle: name,
+            item_url: `http://ecshweb.pchome.com.tw/search/v3.3/?q=${name}`,
+            buttons: [
+              {
+                type: "web_url",
+                url: `http://ecshweb.pchome.com.tw/search/v3.3/?q=${name}`,
+                title: "前往查看",
+              }
+            ]
+          }]
+        }
+      }
+    }
+  }
+  return api.post('messages', messageData);
+}
+
 export function sendGenericMessage(sender, items) {
   let elements = items.map(item => {
     return {
       title: item.name,
-      subtitle: `$${item.price}`,
+      subtitle: `$${item.price} (${item.createdAt.toLocaleDateString()})`,
+      image_url: item.image,
       buttons: [{
         type: "postback",
         title: "查看同種類的項目",
@@ -109,7 +141,7 @@ export function sendReceipt(sender, items) {
   return api.post('messages', messageData);
 }
 
-export function sendRapidReply(sender, reply) {
+export function sendRapidReply(sender, title, reply) {
   let quick_replies = reply.reduce((acc, r) => {
     if (r) {
       if (r.length > 20)
@@ -122,28 +154,67 @@ export function sendRapidReply(sender, reply) {
     }
     return acc;
   }, []);
-  /*let quick_replies = reply.filter(()).map(r => {
-    if (r) {
-      if (r.length > 20)
-        r = r.substr(0, 20);
-      return {
-        content_type: 'text',
-        title: r,
-        payload: 'QUICK_REPLY',
-      };
-    }
-  });*/
+
   console.log(quick_replies);
   let messageData = {
     recipient: {
       id: sender,
     },
     message: {
-      text: "選取符合的名字",
+      text: title,
       quick_replies,
     }
   };
   return api.post('messages', messageData);
 }
 
+export function sendRequestLocation(sender, title) {
+  let messageData = {
+    recipient: {
+      id: sender,
+    },
+    message: {
+      text: title,
+      quick_replies: [{
+        content_type: 'location',
+      }]
+    }
+  };
+  return api.post('messages', messageData);
+}
+
+function parseLocation(items) {
+  return items.reduce((acc, item) => {
+    if (item.loc && item.loc.lat && item.loc.long)
+      return acc.concat(`markers=${item.loc.lat},${item.loc.long}&`)
+    return acc;
+  }, "");
+}
+
+export async function sendLocationMap(sender) {
+  const items = await getAllItems(sender);
+  console.log(items);
+  let locString = parseLocation(items);
+  let messageData = {
+    recipient: {
+      id: sender,
+    },
+    message: {
+      attachment: {
+        type: "template",
+        payload: {
+          template_type: "generic",
+          elements: {
+            element: {
+              title: '您的商品地圖',
+              image_url: `https://maps.googleapis.com/maps/api/staticmap?size=764x400&${locString}`,
+              item_url: `https://maps.googleapis.com/maps/api/staticmap?size=764x400&${locString}`
+            }
+          }
+        }
+      }
+    }
+  };
+  return api.post('messages', messageData);
+}
 
