@@ -6,7 +6,7 @@ Object.defineProperty(exports, "__esModule", {
 exports.sendLocationMap = undefined;
 
 var sendLocationMap = exports.sendLocationMap = function () {
-  var _ref = _asyncToGenerator(regeneratorRuntime.mark(function _callee(sender, loc) {
+  var _ref = _asyncToGenerator(regeneratorRuntime.mark(function _callee(sender) {
     var items, locString, messageData;
     return regeneratorRuntime.wrap(function _callee$(_context) {
       while (1) {
@@ -49,7 +49,7 @@ var sendLocationMap = exports.sendLocationMap = function () {
     }, _callee, this);
   }));
 
-  return function sendLocationMap(_x, _x2) {
+  return function sendLocationMap(_x) {
     return _ref.apply(this, arguments);
   };
 }();
